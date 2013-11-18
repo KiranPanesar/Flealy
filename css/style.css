@@ -1,0 +1,60 @@
+body {
+	background-color: #2980b9;
+}
+
+h1 {
+	font-family: Lato-Black;
+}
+
+h2 {
+	font-family: Lato-Black;
+}
+
+.welcome-message {
+	text-align: center;
+	margin-top:20%;
+}
+
+.welcome-message h1 {
+	font-size: 40pt;
+	color: #ecf0f1;
+	text-shadow:2px 3px #1a5073;
+}
+
+.welcome-message h2 {
+	font-size: 20pt;
+	margin-top: -30px;
+	color: #DAE1E6;
+}
+
+.get-started {
+	text-align: center;
+}
+
+.get-started a {
+	font-family: Lato-Light;
+	color: #ecf0f1;
+	background-color: #2ecc71;
+	padding: 10px 30px;
+	text-decoration: none;
+}
+
+.get-started a:hover {
+	background-color: #27ae60;
+}
+
+@font-face {
+	font-family: Lato;
+	src: url("../fonts/Lato-Regular.ttf");
+}
+
+@font-face {
+	font-family: Lato-Light;
+	src: url("../fonts/Lato-Light.ttf");
+}
+
+
+@font-face {
+	font-family: Lato-Black;
+	src: url("../fonts/Lato-Black.ttf");
+}
