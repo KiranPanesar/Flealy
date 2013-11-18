@@ -1,0 +1,25 @@
+#sign-up {
+	width: 200px;
+}
+
+#postcode-input {
+	font-size: 11pt;
+}
+
+#start-shopping {
+	width: 200px;
+}
+
+#get-started {
+	text-align: center;
+}
+
+#welcome-message {
+	text-align: center;
+	margin-top:17%;
+}
+
+#welcome-message a {
+	color: #F0DE97;
+	text-decoration: none;
+}
