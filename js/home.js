@@ -15,22 +15,8 @@ function validatePostcode() {
 
 
 document.getElementById("postcode-form").addEventListener('submit', function(event) {
-	alert(1);
 	event.preventDefault();
 	
-	var api_request = new XMLHttpRequest();
-	api_request.open("GET", "../api/api.php?action=get_items&lat=10.0&lon=20.0&range=10");
-	api_request.send(null);
-
-	api_request.onreadystatechange = function() {
-		if (api_request.readyState == 4) {
-			if (api_request.status != 200) {
-				handleError(api_request.responseText);
-				return;
-			} else {
-				alert(api_request.responseText);
-			};
-			// window.location.replace("../views/browse.php");
-		};
-	}
+	window.location.replace("../views/browse.php");
+	
 }, false);
