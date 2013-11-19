@@ -1,0 +1,21 @@
+#sign-up {
+	width: 200px;
+}
+
+#go-home {
+	width: 200px;
+}
+
+#signup-message {
+	text-align: center;
+	margin-top:10%;
+}
+
+#signup-div {
+	text-align: center;
+}
+
+#signup-message a {
+	color: #F0DE97;
+	text-decoration: none;
+}
