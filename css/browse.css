@@ -14,6 +14,7 @@
 	float: right;
 	background-color: #ecf0f1;
 	overflow: auto;
+	position: relative;
 }
 
 #search-header {
