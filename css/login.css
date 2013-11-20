@@ -1,0 +1,26 @@
+#login-up {
+	width: 200px;
+}
+
+#go-home {
+	width: 200px;
+}
+
+#login-message {
+	text-align: center;
+	margin-top:10%;
+}
+
+#login-div {
+	text-align: center;
+}
+
+#login-message a {
+	color: #F0DE97;
+	text-decoration: none;
+}
+
+#forgotten-login a {
+	color: #ecf0f1;
+	text-decoration: none;
+}
