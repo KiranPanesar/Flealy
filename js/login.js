@@ -1,3 +1,4 @@
+
 document.getElementById("login-form").addEventListener('submit', function(event) {
 	event.preventDefault();
 
@@ -15,10 +16,9 @@ document.getElementById("login-form").addEventListener('submit', function(event)
 				handleError(api_request.responseText);
 				return;
 			} else {
-				alert(api_request.responseText);
+				saveUserData(api_request.responseText);
+				window.location.replace("../views/browse.php")
 			};
 		};
 	}
-
-
 },  false);
