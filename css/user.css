@@ -1,0 +1,105 @@
+#container {
+	height:100%;
+	background-color: #ecf0f1;
+	/*overflow: hidden;*/
+}
+
+#user-info {
+	width:30%;
+	left: -35%;
+	height: 100%;
+	background-color: #D8F1F2;
+	padding-top: 30px;
+	position: relative;
+	float: left;
+	box-shadow: 1px 1px 5px rgba(52, 73, 94,0.5);
+	z-index: 10;
+	transition: left 0.5s ease;
+	animation-delay: 2s;
+}
+
+#user-picture {
+	width: 200px;
+	height: 200px;
+	background-color: white;
+	border-radius: 100%;
+	margin-right: auto;
+	margin-left: auto;
+	background-image: url("http://placecage.com/200/200");
+}
+
+#user-name {
+	text-align: center;
+	color: #333333;
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+#user-description {
+	color: #7f8c8d;
+	width: 70%;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	font-family: Lato-Light;
+}
+#location-label {
+	color: #2980b9;
+	width: 70%;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	font-family: Lato-Light;
+	font-size:13pt;
+}
+
+#sales-label {
+	color: #2980b9;
+	width: 70%;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: -10px;
+	font-family: Lato-Light;
+	font-size:13pt;
+}
+
+#edit-button {
+	margin-top: 10px;
+}
+
+hr {
+	width: 70%;
+	opacity: 0.6;
+}
+
+small {
+	font-size: 13pt;
+	color: #7f8c8d;
+}
+
+#browser {
+	width:70%;
+	height:100%;
+	float: right;
+	background-color: #ecf0f1;
+	overflow: auto;
+	position: relative;
+	opacity: 0;
+	transition: opacity 0.5s ease;
+	transition-delay: .5s;
+}
+
+.item-table-summary {
+	margin:20px;
+}
+
+#no-items-title {
+	font-family: Lato-Bold;
+	color: #1abc9c;
+	margin-top: 50%;
+}
+
+#list-button {
+	background-color: #3498db;
+}
