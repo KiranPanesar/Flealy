@@ -1,7 +1,12 @@
+window.onload = function() {
+	if (getUserData()) {
+		// window.location.replace("../views/browse.php");
+	};
+};
 
 function signUp() {
 	window.location.replace("../views/register.php");
-}
+};
 
 function validatePostcode() {
 	var regex = /[A-Z]{1,2}[0-9]{1,2} ?[0-9][A-Z]{2}/i; 
@@ -11,7 +16,7 @@ function validatePostcode() {
 	} else {
 		document.body.style.backgroundColor = "#DE6357";
 	};  
-}
+};
 
 
 document.getElementById("postcode-form").addEventListener('submit', function(event) {
