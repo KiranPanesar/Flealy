@@ -1,5 +1,4 @@
-
-window.onload = function() {
+	window.onload = function() {
 
 	if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(function(position) {
@@ -16,22 +15,6 @@ window.onload = function() {
 			dropPins(position, positions)
 		});
 	};
-
-	// var api_request = new XMLHttpRequest();
-	// api_request.open("GET", "../api/api.php?action=get_items&lat=10.0&lon=20.0&range=10");
-	// api_request.send(null);
-
-	// api_request.onreadystatechange = function() {
-	// 	if (api_request.readyState == 4) {
-	// 		if (api_request.status != 200) {
-	// 			handleError(api_request.responseText);
-	// 			return;
-	// 		} else {
-	// 			alert(api_request.responseText);
-	// 		};
-	// 		// window.location.replace("../views/browse.php");
-	// 	};
-	// }
 };
 
 function initialize(lat, lon) {
@@ -41,7 +24,6 @@ function initialize(lat, lon) {
 	};
 	var map = new google.maps.Map(document.getElementById("map-canvas"),
 	    mapOptions);
-	document.getElementById("browser").style.zIndex=0;
 }
 
 // pins is an array of Google Maps LatLng() objects.
