@@ -1,5 +1,4 @@
-<!DOCTYPE>
-
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -7,6 +6,12 @@
 	<link rel="stylesheet" type="text/css" href="css/style.css"/>
 	<link rel="stylesheet" type="text/css" href="css/home.css"/>
 	<script src="js/script.js"></script>
+	
+	<script type="text/javascript">
+		if (getUserData()) {
+			window.location.replace("../views/browse.php");
+		};
+	</script>
 </head>
 
 <body>
