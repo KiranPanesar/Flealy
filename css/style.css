@@ -16,6 +16,12 @@ h2 {
 	color: #DAE1E6;
 }
 
+h3 {
+	font-family: Lato-Black;
+	/*font-size: 20pt;*/
+	color: #DAE1E6;
+}
+
 p {
 	font-family: Lato-Light;
 }
@@ -66,7 +72,6 @@ p {
 
 .btn-cancel:hover {
 	background-color: #c0392b;
-
 }
 
 .btn-cancel:focus {
