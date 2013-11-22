@@ -1,3 +1,5 @@
+var items_json = "";
+
 window.onload = function() {
 	document.getElementById("user-info").style.left = 0;
 
@@ -26,7 +28,7 @@ function parseItemsJSON(items) {
 	var items_table = document.getElementById("items-table");
 
 
-	var items_json = JSON.parse(items);
+	items_json = JSON.parse(items);
 	
 	var htmlString = "";
 
@@ -42,14 +44,11 @@ function parseItemsJSON(items) {
 			};
 
 			htmlString += "<td>";
-			htmlString += itemHTML(item['name'], item['image_url'], item['price']);
+			htmlString += itemHTML(item['name'], item['image_url'], item['price'], item['item_id']);
 			htmlString += "</td>"
 		};
 
 		htmlString += "</tr>";
-
-		console.log(htmlString);
-
 
 	} else {
 		htmlString = "<h2 id='no-items-title'>You're not selling any items :(</h2><br/><center><a class='btn-submit' id='list-button' href='#'>List something!</a></center>"
@@ -60,7 +59,18 @@ function parseItemsJSON(items) {
 
 };
 
+function showItem(id) {
+	for (var i = 0; i < items_json.length; i++) {
+		var item = JSON.parse(items_json[i]);
+		if (item.item_id == id) {
+			show(item);
+			break;
+		};
+	};
+}
 
-function itemHTML(name, image_url, price) {
-	return "<div class='item-table-summary'> <a href=''> <img class='item-image' src='"+image_url+"'/><p class='item-name'>" + name + "</p> <p class='item-price'>&pound;" + price + "</p> </a> </div>";
+
+function itemHTML(name, image_url, price, id) {
+	var onclickArgument = "showItem("+id+")"
+	return "<div class='item-table-summary' id='" + id + "' onclick='"+onclickArgument+"';> <a href='#'> <img class='item-image' src='"+image_url+"'/><p class='item-name'>" + name + "</p> <p class='item-price'>&pound;" + price + "</p> </a> </div>";
 };
