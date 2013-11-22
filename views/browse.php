@@ -5,6 +5,7 @@
 	<title>Browse Item</title>
 	<link rel="stylesheet" type="text/css" href="../css/style.css"/>
 	<link rel="stylesheet" type="text/css" href="../css/browse.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/items.css"/>
 
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <script type="text/javascript"
