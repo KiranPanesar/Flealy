@@ -2,17 +2,17 @@
 
 // include 'db_wrapper.php';
 
-$endpoints = array('items', 'user', 'session');
+$endpoints = array('items', 'item', 'user', 'session');
 
 if (!empty($_GET)) {
 	if (isset($_GET['action']) && in_array($_GET['action'], $endpoints)) {
 	
 	switch ($_GET['action']) {
 		case 'items':
-			get_items($_GET['lat'], $_GET['lon'], $_GET['range']);
+			echo get_items($_GET['lat'], $_GET['lon'], $_GET['range'], $_GET['user']);
 			break;
 		case 'user':
-
+			get_user($_GET['id']);
 			break;
 	}
 
@@ -29,6 +29,10 @@ if (!empty($_GET)) {
 			case 'session':
 				echo sign_in($_POST['username'], $_POST['password']);
 				break;
+			case 'item':
+				echo create_item($_POST['name'], $_POST['description'], $_POST['price'], $_POST['image_url'], $_POST['lat'], $_POST['lon']);
+				// echo create_item('some soap', 'cool description', 12.3, 'google.com', 123.4, 30.0);
+				break;
 			default:
 				# code...
 				break;
@@ -36,13 +40,55 @@ if (!empty($_GET)) {
 	}
 }
 
-function get_items($lat, $lon, $range) {
+// This function is used to return data for the main /browse page
+// as well as the individual user pages.
+// So only pass the user_id if you're loaded data for the user pages.
+function get_items($lat, $lon, $range, $user_id) {
 	// get the items
+	session_start();
+	$sql_query = "";
+	if (isset($_SESSION['user']) && $_SESSION['user'] == $user_id) {
+		$sql_query = "SELECT * from items WHERE user_id='$user_id'";
+	} else {
+		// Need to implement Haversine formula to pick nearby items (http://en.wikipedia.org/wiki/Haversine_formula)
+		// kill me kill me kill me kill m
+		$sql_query = "SELECT * from items";
+	}
+	
+	if ($result = db_connection()->query($sql_query)) {
+		$results_array = array();
+
+		while ($row = $result->fetch_assoc()) {
+			$results_array[] = json_encode($row);
+		}
+
+		return json_encode($results_array);
+	}
+
+}
+
+function create_item($name, $description, $price, $image_url, $latitude, $longitude) {
+	session_start();
+
+	if (isset($_SESSION['user'])) {
+
+		$user_id = $_SESSION['user'];
+		$insert_query = "INSERT INTO items (name, description, price, image_url, latitude, longitude, user_id) VALUES ('$name', '$description', '$price', '$image_url', '$latitude', '$longitude', '$user_id')";
+
+		if ($result = db_connection()->query($insert_query)) {
+			while ($row = $result->fetch_assoc()) {
+				return get_items(0.0, 0.0, 0.0, 0, $_SESSION['user']);
+			}
+		}
+	} else {
+		return json_encode(array('error' => array('code'=>'400', 'message'=>'Not signed in')));
+	}
 }
 
 function get_user($user_id) {
 	if (isset($_SESSION['user'])) {
-		$select_query = "SELECT user_id, username, email, image_url FROM users WHERE id_hash='$_SESSION['user']'";
+		$user_id = $_SESSION['user'];
+		$select_query = "SELECT user_id, username, email, image_url FROM users WHERE user_id='$user_id'";
 		
 		if ($result = db_connection()->query($select_query)) {
 			while ($row = $result->fetch_assoc()) {
@@ -68,13 +114,10 @@ function create_user($username, $email, $password, $image_url) {
 		$result = db_connection()->query($select_query);
 		
 		while ($row = $result->fetch_assoc()) {
-			$id_hash = user_id_hash($row['user_id']);
-			$update_query = "UPDATE users SET id_hash='$id_hash' WHERE password='$password_hash'";
-
-			if (db_connection()->query($update_query)) {
-				return json_encode(array('response'=>'success'));
-			}
+			return json_encode(array('response'=>'success'));
 		}
+
+		return json_encode(array('error' => array('code'=>'500', 'message'=>'Could not create user account')));
 	}
 }
 
@@ -96,10 +139,9 @@ function sign_in($username, $password) {
 		// Create a has for the user
 		// HASH THE USER ID! Otherwise, attackers just need to find out your API calls (which is pretty easy),
 		// then they can immitate users and wreak havoc! (I learned this the hard way...)
-		$_SESSION['user'] = $row['id_hash'];
+		$_SESSION['user'] = $row['user_id'];
 
 		unset($row['password']);
-		unset($row['id_hash']);
 
 	    return json_encode($row);
 	}
@@ -115,10 +157,6 @@ function db_connection() {
 	// }
 
 	return $connection;
-}
-
-function user_id_hash($user_id) {
-	return sha1($user_id . 'FbV+\)Vb4rf"Ue!#-K/GwAX\3F37[IFl?HpquTCT$*ZG{.Zc{7&@GaBam>5y|yl');
 }
 
 function login_hash($username, $password) {
