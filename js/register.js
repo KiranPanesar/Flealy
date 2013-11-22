@@ -15,7 +15,7 @@ document.getElementById("signup-form").addEventListener('submit', function(event
 			if (api_request.status != 200) {
 				handleError(api_request.responseText);
 				return;
-			} else {
+			} else {				
 				window.location.replace("../views/login.php");
 			};
 		};
