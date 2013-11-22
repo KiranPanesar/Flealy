@@ -7,6 +7,17 @@
 	<link rel="stylesheet" type="text/css" href="../css/style.css"/>
 	<link rel="stylesheet" type="text/css" href="../css/items.css"/>
 	<link rel="stylesheet" type="text/css" href="../css/user.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/overlay_dialog.css"/>
+
+	<script type="text/javascript" src="../js/overlay_dialog.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="../css/item.css"/>
+	<script type="text/javascript" src="../js/item.js"></script>
+
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-nBY5KHmOAwPNCHNKusZmwf-ybUWrB2M&sensor=true">
+    </script>
 
 	<script src="../js/script.js"></script>
 
