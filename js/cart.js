@@ -1,0 +1,224 @@
+var cart_items_json = null;
+
+function showUserCart() {
+	showOverlayDialog();
+	drawCartFooterBar();
+
+	event.preventDefault();
+
+	loadUserCart();
+};
+
+function loadUserCart() {
+	var api_request = new XMLHttpRequest();
+	api_request.open("GET", "../api/api.php?action=cart", true);
+	api_request.send();
+
+	api_request.onreadystatechange = function() {
+		if (api_request.readyState == 4) {
+			if (api_request.status != 200) {
+				handleError(api_request.responseText);
+				return;
+			} else {
+				console.log(api_request.responseText);
+				drawCartTableView(api_request.responseText);
+				document.getElementById("basket-total-label").innerHTML = "Total &pound;"+cart_items_json.summary.total_price;
+			};
+		};
+	};
+}
+
+function clearCart() {
+	if (confirm("Are you sure you want to delete all the items from your cart?")) {
+		console.log("yessir");
+
+		var api_request = new XMLHttpRequest();
+		api_request.open("DELETE", "../api/api.php?action=cart", true);
+		api_request.send();
+
+		api_request.onreadystatechange = function() {
+			if (api_request.readyState == 4) {
+				if (api_request.status != 200) {
+					handleError(api_request.responseText);
+					return;
+				} else {
+					console.log(api_request.responseText);
+					drawCartTableView(api_request.responseText);
+				};
+			};
+		};
+	} else {
+		console.log("nope");
+	};
+}
+
+function removeItemFromCart(item_id) {
+	var item = null;
+	var items = JSON.parse(cart_items_json.items);
+	for (var i = 0; i < items.length; i++) {
+		console.log(items[i]);
+		if (items[i].item_id == item_id) {
+			item = items[i];
+			break;
+		};
+	};
+
+	if (item != null) {
+		if (confirm("Are you sure you want to delete '" + item.name + "' from your cart?")) {
+			var api_request = new XMLHttpRequest();
+			api_request.open("DELETE", "../api/api.php?action=cart&id="+item.item_id, true);
+			api_request.send();
+
+			api_request.onreadystatechange = function() {
+				if (api_request.readyState == 4) {
+					if (api_request.status != 200) {
+						handleError(api_request.responseText);
+						return;
+					} else {
+						console.log(api_request.responseText);
+						loadUserCart(api_request.responseText);
+					};
+				};
+			};
+		};
+	};
+
+}
+
+function cartGoShopping() {
+	hideOverlayDialog();
+}
+
+function drawCartFooterBar() {
+	var item_nav_bar = document.createElement("div");
+	item_nav_bar.setAttribute("id", "cart-footer-bar");
+	
+	var clear_button = document.createElement("a");
+	clear_button.setAttribute("id", "clear-basket-button");
+
+	clear_button.setAttribute("href", "#");
+	clear_button.innerHTML = "<p>Clear items</p>";
+
+	var total_label = document.createElement("p");
+	total_label.setAttribute("id", "basket-total-label");
+	total_label.innerHTML = "Total";
+
+	var checkout_button = document.createElement("a");
+	checkout_button.setAttribute("id", "checkout-button");
+
+	checkout_button.setAttribute("onclick", "hideOverlayDialog()");
+	checkout_button.setAttribute("href", "#");
+	checkout_button.innerHTML = "<p>Check out</p>";
+
+	item_nav_bar.appendChild(checkout_button);
+	item_nav_bar.appendChild(clear_button);
+	item_nav_bar.appendChild(total_label);
+
+	document.getElementById("content-container").appendChild(item_nav_bar);
+	
+	document.getElementById("clear-basket-button").addEventListener('click', function(event) {
+		event.preventDefault();
+		
+		if (JSON.parse(cart_items_json.items).length > 0) {
+			clearCart();
+		};
+
+	}, false);
+};
+
+function drawCartTableView(items) {
+    var table_element = document.getElementById('cart-items-table');
+ 
+    if (table_element != null) {
+    	table_element.parentNode.removeChild(table_element);
+    };
+ 
+	var items_table = document.createElement("table");
+	items_table.setAttribute("id", "cart-items-table");
+
+
+	cart_items_json = JSON.parse(items);
+	var items = JSON.parse(cart_items_json.items);
+
+	var htmlString = "";
+
+	if (items.length > 0) {
+		
+		for (var i = 0; i < items.length; i++) {
+			var item = items[i];
+			htmlString += "<tr>";
+			
+			// item image
+			htmlString += "<td class='cart-table-item item-table-image'>";
+			htmlString += "<img src='"+item.image_url+"' />";
+			htmlString += "<td>";
+
+			// item name
+			htmlString += "<td class='cart-table-item item-table-name'>";
+			htmlString += "<p>"+item.name+"</p>";
+			htmlString += "<td>";
+
+			// item price
+			htmlString += "<td class='cart-table-item item-table-price'>";
+			htmlString += "<p>&pound;"+item.price+"</p>";
+			htmlString += "<td>";
+
+			// delete item
+			var deleteEvent = "removeItemFromCart(" + item.item_id + ")"
+			htmlString += "<td class='cart-table-item item-table-remove'>";
+			htmlString += "<a href='#' class='btn btn-cancel' onclick = '"+deleteEvent+"'>Remove</a>";
+			htmlString += "<td>";
+
+			htmlString += "</tr>";
+		};
+	
+		items_table.innerHTML = htmlString; 
+
+		var table_container = document.createElement("div");
+		table_container.setAttribute("id", "cart-table-container");
+		table_container.appendChild(items_table);
+
+		appendOverlayContentView(table_container);
+
+	} else {
+		var noItemsHeader = document.createElement("h2");
+		noItemsHeader.setAttribute("id", "no-cart-items-title");
+		noItemsHeader.innerHTML = "Nothing in your shopping cart";
+
+		var goShoppingButton = document.createElement("a");
+		goShoppingButton.setAttribute("class", "btn btn-info");
+		goShoppingButton.setAttribute("id", "cart-go-shopping-button");
+		goShoppingButton.setAttribute("onclick", "cartGoShopping()");
+		goShoppingButton.setAttribute("href", "#");
+
+		goShoppingButton.innerHTML = "Go Shopping!";
+
+		var noItemsContainer = document.createElement("div");
+		noItemsContainer.setAttribute("id", "no-cart-items-container");
+
+		noItemsContainer.appendChild(noItemsHeader);
+		noItemsContainer.appendChild(goShoppingButton);
+
+		appendOverlayContentView(noItemsContainer);
+
+		var cart_footer_bar = document.getElementById('cart-footer-bar');
+		
+		if (cart_footer_bar != null) {
+			cart_footer_bar.parentNode.removeChild(cart_footer_bar);
+		};
+
+	};
+
+};
+
+
+
+
+
+
+
+
+
+
+
+
