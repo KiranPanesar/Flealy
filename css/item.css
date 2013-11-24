@@ -42,7 +42,7 @@
 	font-size: 14pt;
 }
 
-#map-canvas {
+#item-map-canvas {
 	height:50%;
 	width: 100%;
 	left: 0;
@@ -106,12 +106,19 @@
 #message-user {
 	display: block;
 	background-color: #3498db;
-	margin-top: 10px;
+	margin-top: 5px;
 	width: 120px;
 }
 
 #message-user:hover {
 	background-color: #2980b9;
+}
+
+#item-ownership-notification {
+	text-align:center; 
+	font-size:10pt;
+	color: #7f8c8d;
+	margin-top: 5px;
 }
 
 #item-detail-description {

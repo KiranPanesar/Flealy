@@ -17,8 +17,13 @@
 	background-color: #bdc3c7;
 }
 
-.item-table-summary:a {
+.item-table-summary a {
 	text-decoration: none;
+}
+
+.item-table-summary img {
+	width: 200px;
+	height:200px;
 }
 
 .item-name {
