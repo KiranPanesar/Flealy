@@ -16,11 +16,9 @@ window.onload = function() {
 				return;
 			} else {
 				parseItemsJSON(api_request.responseText);
-				// window.location.replace("../views/browse.php")
 			};
 		};
 	}
-
 };
 
 
@@ -63,7 +61,7 @@ function showItem(id) {
 	for (var i = 0; i < items_json.length; i++) {
 		var item = JSON.parse(items_json[i]);
 		if (item.item_id == id) {
-			show(item);
+			showItemDialog(item);
 			break;
 		};
 	};
