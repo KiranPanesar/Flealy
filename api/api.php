@@ -2,42 +2,74 @@
 
 // include 'db_wrapper.php';
 
-$endpoints = array('items', 'item', 'user', 'session');
+$endpoints = array('items', 'item', 'user', 'session', 'cart');
 
-if (!empty($_GET)) {
-	if (isset($_GET['action']) && in_array($_GET['action'], $endpoints)) {
-	
-	switch ($_GET['action']) {
-		case 'items':
-			echo get_items($_GET['lat'], $_GET['lon'], $_GET['range'], $_GET['user']);
-			break;
-		case 'user':
-			get_user($_GET['id']);
-			break;
-	}
+switch ($_SERVER['REQUEST_METHOD']) {
+	case 'GET':
+		if (isset($_GET['action']) && in_array($_GET['action'], $endpoints)) {	
+			switch ($_GET['action']) {
+				case 'items':
+					echo get_items($_GET['lat'], $_GET['lon'], $_GET['range'], $_GET['user']);
+					break;
+				case 'user':
+					echo get_user($_GET['id']);
+					break;
+				case 'cart':
+					echo get_cart();
+					break;
+			}
 
-	} else {
-		echo json_encode(array('error' => array('code' => 404, 'message' => 'Not Found')));
-	}
-} else if (!empty($_POST)) {
-	if (isset($_POST['action']) && in_array($_POST['action'], $endpoints)) {
-		switch ($_POST['action']) {
-			// Register a user
-			case 'user':
-				echo create_user($_POST['username'],  $_POST['email'], $_POST['password'], 'http://placecage.com/200/200');
-				break;
-			case 'session':
-				echo sign_in($_POST['username'], $_POST['password']);
-				break;
-			case 'item':
-				echo create_item($_POST['name'], $_POST['description'], $_POST['price'], $_POST['image_url'], $_POST['lat'], $_POST['lon']);
-				// echo create_item('some soap', 'cool description', 12.3, 'google.com', 123.4, 30.0);
-				break;
-			default:
-				# code...
-				break;
+		} else {
+			echo json_encode(array('error' => array('code' => 404, 'message' => 'Not Found')));
 		}
-	}
+		break;
+	case 'POST':
+		if (isset($_POST['action']) && in_array($_POST['action'], $endpoints)) {
+			switch ($_POST['action']) {
+				// Register a user
+				case 'user':
+					echo create_user($_POST['username'],  $_POST['email'], $_POST['password'], 'http://placecage.com/200/200');
+					break;
+				case 'session':
+					echo sign_in($_POST['username'], $_POST['password']);
+					break;
+				case 'item':
+					echo create_item($_POST['name'], $_POST['description'], $_POST['price'], $_POST['image_url'], $_POST['lat'], $_POST['lon']);
+					break;
+				case 'cart':
+					echo "adding " . $_POST['id'];
+					echo add_item_to_cart($_POST['id']);
+					break;
+				default:
+					# code...
+					break;
+			}
+		}
+		break;
+	case 'DELETE':
+		// So PHP doesn't pass data via the $_DELETE[] array, so I use GET to send the 
+		// data. 
+		if (isset($_GET['action']) && in_array($_GET['action'], $endpoints)) {
+			switch ($_GET['action']) {
+				case 'session':
+					echo sign_out();
+					break;
+				case 'cart':
+					if ($_GET['id']) {
+						echo remove_item_from_cart($_GET['id']);
+					} else {
+						echo clear_basket();
+					}
+					break;
+				default:
+					# code...
+					break;
+			}
+		}
+		break;
+	default:
+		# code...
+		break;
 }
 
 // This function is used to return data for the main /browse page
@@ -64,7 +96,48 @@ function get_items($lat, $lon, $range, $user_id) {
 
 		return json_encode($results_array);
 	}
+}
 
+
+function get_user($user_id) {
+	session_start();
+	if (isset($_SESSION['user'])) {
+		$user_id = $_SESSION['user'];
+		$select_query = "SELECT user_id, username, email, image_url FROM users WHERE user_id='$user_id'";
+		
+		if ($result = db_connection()->query($select_query)) {
+			while ($row = $result->fetch_assoc()) {
+				return json_encode($row);
+			}
+		}
+	} else {
+		return json_encode(array('error' => array('code'=>'400', 'message'=>'Not signed in')));
+	}
+}
+
+// Gets the carted items for the current user
+function get_cart() {
+	session_start();
+	if (isset($_SESSION['user'])) {
+		$user_id = $_SESSION['user'];
+
+		$select_query = "SELECT items.item_id, items.name, items.image_url, items.price FROM carts INNER JOIN items on items.item_id = carts.item_id AND carts.user_id = '$user_id'";
+
+		if ($result = db_connection()->query($select_query)) {
+			$results_array = array();
+			$total_cost    = 0.0;
+
+			while ($row = $result->fetch_assoc()) {
+				$results_array[] = $row;
+				$total_cost += $row['price'];
+			}
+			$final_array = array('summary' => array('number_of_items' => count($results_array), 'total_price' => $total_cost), 'items' => json_encode($results_array));
+			return json_encode($final_array);
+		}
+
+	} else {
+		return json_encode(array('error' => array('code'=>'400', 'message'=>'Not signed in')));
+	}
 }
 
 function create_item($name, $description, $price, $image_url, $latitude, $longitude) {
@@ -80,22 +153,6 @@ function create_item($name, $description, $price, $image_url, $latitude, $longit
 				return get_items(0.0, 0.0, 0.0, 0, $_SESSION['user']);
 			}
 		}
-	} else {
-		return json_encode(array('error' => array('code'=>'400', 'message'=>'Not signed in')));
-	}
-}
-
-function get_user($user_id) {
-	if (isset($_SESSION['user'])) {
-		$user_id = $_SESSION['user'];
-		$select_query = "SELECT user_id, username, email, image_url FROM users WHERE user_id='$user_id'";
-		
-		if ($result = db_connection()->query($select_query)) {
-			while ($row = $result->fetch_assoc()) {
-				return json_encode($row);
-			}
-		}
-
 	} else {
 		return json_encode(array('error' => array('code'=>'400', 'message'=>'Not signed in')));
 	}
@@ -147,6 +204,60 @@ function sign_in($username, $password) {
 	}
 
     die(json_encode(array('error' => array('code' => '400', 'mesage'=>"Incorrect username/password."))));
+}
+
+function add_item_to_cart($item_id) {
+	session_start();
+
+	if (isset($_SESSION['user'])) {
+		$user_id = $_SESSION['user'];
+		$insert_query = "INSERT INTO carts (item_id, user_id) VALUES ('$item_id', '$user_id')";
+
+		if (db_connection()->query($insert_query)) {
+			return json_encode(array('response'=>'success'));
+		}
+	} else {
+		return json_encode(array('error' => array('code' => '400', 'mesage'=>"Not signed in")));
+	}
+}
+
+function sign_out() {
+	session_destroy();
+
+	return json_encode(array('code' => 200, 'message' => 'Signed Out'));
+}
+
+function clear_basket() {
+	session_start();
+
+	if (isset($_SESSION['user'])) {
+		$user_id = $_SESSION['user'];
+		$delete_query = "DELETE FROM carts WHERE user_id = '$user_id'";
+
+		if (db_connection()->query($delete_query)) {
+			return json_encode(array('response'=>'success'));
+		}
+
+	} else {
+		return json_encode(array('error' => array('code' => '400', 'mesage'=>"Not signed in")));
+	}
+}
+
+function remove_item_from_cart($item_id) {
+	session_start();
+
+	if (isset($_SESSION['user'])) {
+		$user_id = $_SESSION['user'];
+		$delete_query = "DELETE FROM carts WHERE user_id = '$user_id' AND item_id = '$item_id'";
+		// echo $delete_query;
+
+		if (db_connection()->query($delete_query)) {
+			return json_encode(array('response'=>'success'));
+		}
+
+	} else {
+		return json_encode(array('error' => array('code' => '400', 'mesage'=>"Incorrect username/password.")));
+	}
 }
 
 function db_connection() {
