@@ -20,7 +20,7 @@
 			<input type="text" name="username" class="text-input" id="username-input" placeholder="Username" /><br/>
 			<input type="password" name="password" class="text-input" id="password-input" placeholder="Password" /><br/>
 
-			<input type="submit" value="Sign In" class="btn-submit" id="login-up" />
+			<input type="submit" value="Sign In" class="btn btn-submit" id="login-up" />
 		</form>
 		<p id="forgotten-login"><a href="http://static1.fjcdn.com/comments/Too+bad+it+isn+t+spiderman+_9f3c27c39099a8f557d70df5b98795c4.jpg" target="_new">Forgotten your password?</a></p>
 

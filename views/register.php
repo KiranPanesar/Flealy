@@ -22,9 +22,9 @@
 			<input type="text" name="username" class="text-input" id="username-input" placeholder="Username" /><br/>
 			<input type="password" name="password" class="text-input" id="password-input" placeholder="Password" /><br/>
 
-			<input type="submit" value="Sign Up" class="btn-submit" id="sign-up" />
+			<input type="submit" value="Sign Up" class="btn btn-submit" id="sign-up" />
 		</form>
-		<input type="submit" value="Home"    class="btn-cancel" id="go-home" onclick="goHome();" />
+		<input type="submit" value="Home" class="btn btn-cancel" id="go-home" onclick="goHome();" />
 	</div>
 	<script src="../js/register.js"></script>
 </body>

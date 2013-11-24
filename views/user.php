@@ -7,8 +7,8 @@
 	<link rel="stylesheet" type="text/css" href="../css/style.css"/>
 	<link rel="stylesheet" type="text/css" href="../css/items.css"/>
 	<link rel="stylesheet" type="text/css" href="../css/user.css"/>
+	
 	<link rel="stylesheet" type="text/css" href="../css/overlay_dialog.css"/>
-
 	<script type="text/javascript" src="../js/overlay_dialog.js"></script>
 
 	<link rel="stylesheet" type="text/css" href="../css/item.css"/>
@@ -38,10 +38,10 @@
 			<h3 id="location-label">Cardiff, Wales</h3>
 			<h3 id="sales-label">116 sales</h3><br/>
 
-			<center><a class="btn-submit" id="edit-button" href="#">Edit Profile</a></center>
+			<center><a class="btn btn-submit" id="edit-button" href="#">Edit Profile</a></center>
 		</div>
     	<div id="browser">
-    		<h2 id="items-title">Currently Listed Items</h2>
+    		<h2 id="items-title">My Store</h2>
 	    	<center>
 	    	<table id="items-table">
 	    		
