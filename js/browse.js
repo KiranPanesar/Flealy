@@ -14,7 +14,7 @@ window.onload = function() {
 	// };
 };
 
-var items_json = "";
+var browse_items_json = "";
 
 function findNearbyItems(lat, lon) {
 	var api_request = new XMLHttpRequest();
@@ -33,21 +33,21 @@ function findNearbyItems(lat, lon) {
 			};
 		};
 	}
-}
+};
 
 function parseItemsJSON(items) {
 	var items_table = document.getElementById("items-table");
 
 
-	items_json = JSON.parse(items);
+	browse_items_json = JSON.parse(items);
 	
 	var htmlString = "";
 
-	if (items_json.length > 0) {
+	if (browse_items_json.length > 0) {
 		htmlString = "<tr>";
 	
-		for (var i = 0; i < items_json.length; i++) {
-			var item = JSON.parse(items_json[i]);
+		for (var i = 0; i < browse_items_json.length; i++) {
+			var item = JSON.parse(browse_items_json[i]);
 
 			if (i % 2 == 0) {
 				htmlString += "</tr>";
@@ -65,17 +65,29 @@ function parseItemsJSON(items) {
 	});
 
 	} else {
-		htmlString = "<h2 id='no-items-title'>You're not selling any items :(</h2><br/><center><a class='btn-submit' id='list-button' href='#'>List something!</a></center>"
+		htmlString = "<h2 id='no-items-title'>You're not selling any items :(</h2><br/><center><a class='btn btn-submit' id='list-button' href='#'>List something!</a></center>"
 	};
 
 	document.getElementById('items-table').innerHTML = htmlString; 
-	document.getElementById("browser").style.opacity = 1.0;
+	document.getElementById("browser").style.opacity = 1;
+	document.getElementById("map-canvas").style.opacity = 1;
 
 };
 
 function itemHTML(name, image_url, price, id) {
 	var onclickArgument = "showItem("+id+")"
 	return "<div class='item-table-summary' id='" + id + "' onclick='"+onclickArgument+"';> <a href='#'> <img class='item-image' src='"+image_url+"'/><p class='item-name'>" + name + "</p> <p class='item-price'>&pound;" + price + "</p> </a> </div>";
+};
+
+function showItem(id) {
+
+	for (var i = 0; i < browse_items_json.length; i++) {
+		var item = JSON.parse(browse_items_json[i]);
+		if (item.item_id == id) {
+			showItemDialog(item);
+			break;
+		};
+	};
 };
 
 function initializeMap(lat, lon) {
@@ -85,7 +97,7 @@ function initializeMap(lat, lon) {
 	};
 	var map = new google.maps.Map(document.getElementById("map-canvas"),
 	    mapOptions);
-}
+};
 
 // pins is an array of Google Maps LatLng() objects.
 function dropPins(position) {
@@ -95,8 +107,8 @@ function dropPins(position) {
 	}
 	var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
-	for (var i = 0; i < items_json.length; i++) {
-		var item = JSON.parse(items_json[i]);
+	for (var i = 0; i < browse_items_json.length; i++) {
+		var item = JSON.parse(browse_items_json[i]);
 
 		var marker = new google.maps.Marker({			
 		    position: new google.maps.LatLng(item.latitude, item.longitude),
@@ -104,4 +116,4 @@ function dropPins(position) {
 		    title: 'Hello World!'
 		});
 	};
-}
+};
