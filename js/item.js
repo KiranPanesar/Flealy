@@ -1,15 +1,33 @@
+function showItemDialog(item) {
+	console.log("showing"+ item);
 
-function show(item) {
 	showOverlayDialog();
-
-	 drawMapView(item.latitude, item.longitude);
-	 drawItemInfoView(item);
+	drawMapView(item.latitude, item.longitude);
+	drawItemInfoView(item);
 };
 
+function buyItem(item_id) {
+	var api_request = new XMLHttpRequest();
+	api_request.open("POST", "../api/api.php", true);
+	api_request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	api_request.send("action=cart&id=" + item_id);
+
+	api_request.onreadystatechange = function() {
+		if (api_request.readyState == 4) {
+			if (api_request.status != 200) {
+				handleError(api_request.responseText);
+				return;
+			} else {
+				clearUserData();
+				console.log(api_request.responseText);
+			};
+		};
+	};
+}
 
 function drawMapView(lat, lon) {
 	var map_view = document.createElement("div");
-	map_view.setAttribute("id", "map-canvas");
+	map_view.setAttribute("id", "item-map-canvas");
 	
 	appendOverlayContentView(map_view);
 
@@ -17,7 +35,7 @@ function drawMapView(lat, lon) {
 	 	zoom: 15,
 	    center: new google.maps.LatLng(lat, lon)
 	}
-	var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+	var map = new google.maps.Map(document.getElementById('item-map-canvas'), mapOptions);
 
 	var marker = new google.maps.Marker({
 	    position: new google.maps.LatLng(lat, lon),
@@ -44,17 +62,18 @@ function drawItemInfoView(item) {
 	button_container.setAttribute("id", "button-container");
 
 	var buy_item = document.createElement("a");
-	buy_item.setAttribute("class", "btn-submit");
+	buy_item.setAttribute("class", "btn btn-submit");
 	buy_item.setAttribute("id", "buy-item");
 	buy_item.setAttribute("href", "#");
-	buy_item.innerHTML = "Buy $20";
+	buy_item.setAttribute("onclick", "buyItem(" + item.item_id + ")");
+
+	buy_item.innerHTML = "Buy &pound;"+item.price;
 	
 	var message_user = document.createElement("a");
-	message_user.setAttribute("class", "btn-submit");
+	message_user.setAttribute("class", "btn btn-info");
 	message_user.setAttribute("id", "message-user");
 	message_user.setAttribute("href", "#");
 	message_user.innerHTML = "Message Seller";
-
 
 	var item_detail_description = document.createElement("p");
 	item_detail_description.setAttribute("id", "item-detail-description");
@@ -62,6 +81,13 @@ function drawItemInfoView(item) {
 
 	button_container.appendChild(buy_item);
 	button_container.appendChild(message_user);
+
+	if (item.user_id == getUserData().user_id) {
+		var ownership_notification = document.createElement("p");
+		ownership_notification.innerHTML = "This is your item!";
+		ownership_notification.setAttribute("id", "item-ownership-notification");
+		button_container.appendChild(ownership_notification);		
+	};
 
 	metadata_container.appendChild(item_name);
 	metadata_container.appendChild(button_container);
