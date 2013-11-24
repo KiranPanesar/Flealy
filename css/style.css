@@ -41,7 +41,7 @@ p {
 	outline: none;
 }
 
-.btn-submit {
+.btn {
 	font-family: Lato-Light;
 	font-size: 12pt;
 	color: #ecf0f1;
@@ -52,31 +52,32 @@ p {
 	border:none;
 }
 
-.btn-submit:hover {
-	background-color: #27ae60;
-
-}
-
-.btn-submit:focus {
+.btn:focus {
 	outline-width: 0;
 }
 
+.btn-submit {
+	background-color: #2ecc71;
+}
+
+.btn-submit {
+	background-color: #2ecc71;
+}
+
 .btn-cancel {
-	font-family: Lato-Light;
-	font-size: 12pt;
-	color: #ecf0f1;
 	background-color: #e74c3c;
-	padding: 10px 20px;
-	text-decoration: none;
-	border:none;
 }
 
 .btn-cancel:hover {
 	background-color: #c0392b;
 }
 
-.btn-cancel:focus {
-	outline-width: 0;
+.btn-info {
+	background-color: #3498db;
+}
+
+.btn-info:hover {
+	background-color: #2980b9;
 }
 
 .nav-bar {
