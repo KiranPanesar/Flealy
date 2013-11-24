@@ -30,6 +30,7 @@ function drawOverlayNavbar() {
 
 	var dismiss_button = document.createElement("a");
 	dismiss_button.setAttribute("id", "dismiss-button");
+	dismiss_button.setAttribute("class", "dismiss-button");
 	dismiss_button.setAttribute("onclick", "hideOverlayDialog()");
 	dismiss_button.setAttribute("href", "#");
 	dismiss_button.innerHTML = "<p>Dismiss</p>";
