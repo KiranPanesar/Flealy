@@ -12,9 +12,12 @@
 
 	<script type="text/javascript" src="../js/overlay_dialog.js"></script>
 	<script type="text/javascript" src="../js/cart.js"></script>
+	<script type="text/javascript" src="../js/list_item.js"></script>
 
 	<link rel="stylesheet" type="text/css" href="../css/item.css"/>
 	<script type="text/javascript" src="../js/item.js"></script>
+	
+	<script src="https://checkout.stripe.com/checkout.js"></script>
 
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <script type="text/javascript"
