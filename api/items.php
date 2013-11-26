@@ -7,7 +7,7 @@ function get_items($lat, $lon, $range, $user_id) {
 	// get the items
 	session_start();
 	$sql_query = "";
-	if (isset($_SESSION['user']) && $_SESSION['user'] == $user_id) {
+	if (isset($user_id)) {
 		$sql_query = "SELECT * from items WHERE user_id='$user_id'";
 	} else {
 		// Need to implement Haversine formula to pick nearby items (http://en.wikipedia.org/wiki/Haversine_formula)
