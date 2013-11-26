@@ -1,12 +1,37 @@
 var cart_items_json = null;
 
 function showUserCart() {
+
 	showOverlayDialog();
 	drawCartFooterBar();
 
 	event.preventDefault();
 
 	loadUserCart();
+
+	var handler = StripeCheckout.configure({
+		key: 'pk_test_KhN1YTW18SkQHzh1e3xfqzt6',
+		token: function(token, args) {
+			successfullyCheckedOut(token);
+		}
+	});
+
+	document.getElementById('checkout-button').addEventListener('click', function(e) {
+
+	console.log(cart_items_json.summary.total_price);
+		// Open Checkout with further options
+		handler.open({
+			name: 'Flealy Checkout',
+			description: cart_items_json.summary.number_of_items + " items",
+			image: "../img/stripe_logo.png",
+			amount: cart_items_json.summary.total_price*100,
+			email: getUserData().email,
+			currency: "GBP"
+		});
+
+		e.preventDefault();
+		
+	});
 };
 
 function loadUserCart() {
@@ -22,7 +47,10 @@ function loadUserCart() {
 			} else {
 				console.log(api_request.responseText);
 				drawCartTableView(api_request.responseText);
-				document.getElementById("basket-total-label").innerHTML = "Total &pound;"+cart_items_json.summary.total_price;
+				
+				if (JSON.parse(cart_items_json.items).length > 0) {
+					document.getElementById("basket-total-label").innerHTML = "Total &pound;"+cart_items_json.summary.total_price;
+				};
 			};
 		};
 	};
@@ -75,14 +103,65 @@ function removeItemFromCart(item_id) {
 						handleError(api_request.responseText);
 						return;
 					} else {
-						console.log(api_request.responseText);
-						loadUserCart(api_request.responseText);
+						cart_items_json = JSON.parse(api_request.responseText);
+						console.log(cart_items_json);
+
+						removeElementFromDocument("cart-item-id-" + item_id);
+						if (JSON.parse(cart_items_json.items).length > 0) {
+							document.getElementById("basket-total-label").innerHTML = "Total &pound;"+cart_items_json.summary.total_price;
+						};
 					};
 				};
 			};
 		};
 	};
+}
 
+function successfullyCheckedOut(token) {
+	var api_request = new XMLHttpRequest();
+	api_request.open("POST", "../api/api.php", true);
+	api_request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	api_request.send('action=purchase&card_id=' + token.card.id + '&transaction_id=' + token.id);
+
+	api_request.onreadystatechange = function() {
+		if (api_request.readyState == 4) {
+			if (api_request.status != 200) {
+				handleError(api_request.responseText);
+				return;
+			} else {
+				removeElementFromDocument("cart-footer-bar");
+				removeElementFromDocument("cart-table-container");
+
+				var successMessageHeader = document.createElement("h2");
+				successMessageHeader.setAttribute("id", "no-cart-items-title");
+				successMessageHeader.innerHTML = "Sucessfully checked out!";
+
+				var successMessageParagraph = document.createElement("p");
+				successMessageParagraph.setAttribute("id", "no-cart-items-paragraph");
+				successMessageParagraph.innerHTML = "Your items are now ready for collection!";
+
+				var goShoppingButton = document.createElement("a");
+				goShoppingButton.setAttribute("class", "btn btn-info");
+				goShoppingButton.setAttribute("id", "cart-go-shopping-button");
+				goShoppingButton.setAttribute("onclick", "cartGoShopping()");
+				goShoppingButton.setAttribute("href", "#");
+
+				goShoppingButton.innerHTML = "Done";
+
+				var successMessageContainer = document.createElement("div");
+				successMessageContainer.setAttribute("id", "no-cart-items-container");
+
+				successMessageContainer.appendChild(successMessageHeader);
+				successMessageContainer.appendChild(successMessageParagraph);
+				successMessageContainer.appendChild(goShoppingButton);
+
+				appendOverlayContentView(successMessageContainer);
+
+
+				console.log(api_request.responseText);
+			};
+		};
+	};
 }
 
 function cartGoShopping() {
@@ -106,16 +185,17 @@ function drawCartFooterBar() {
 	var checkout_button = document.createElement("a");
 	checkout_button.setAttribute("id", "checkout-button");
 
-	checkout_button.setAttribute("onclick", "hideOverlayDialog()");
+	// checkout_button.setAttribute("onclick", "hideOverlayDialog()");
 	checkout_button.setAttribute("href", "#");
 	checkout_button.innerHTML = "<p>Check out</p>";
+
 
 	item_nav_bar.appendChild(checkout_button);
 	item_nav_bar.appendChild(clear_button);
 	item_nav_bar.appendChild(total_label);
 
 	document.getElementById("content-container").appendChild(item_nav_bar);
-	
+
 	document.getElementById("clear-basket-button").addEventListener('click', function(event) {
 		event.preventDefault();
 		
@@ -130,15 +210,20 @@ function drawCartTableView(items) {
     var table_element = document.getElementById('cart-items-table');
  
     if (table_element != null) {
-    	table_element.parentNode.removeChild(table_element);
+        table_element.parentNode.removeChild(table_element);
     };
- 
+
 	var items_table = document.createElement("table");
 	items_table.setAttribute("id", "cart-items-table");
 
 
 	cart_items_json = JSON.parse(items);
-	var items = JSON.parse(cart_items_json.items);
+
+	var items = [];
+	
+	if (JSON.parse(cart_items_json.items).length > 0) {
+		items = JSON.parse(cart_items_json.items);
+	};
 
 	var htmlString = "";
 
@@ -146,7 +231,7 @@ function drawCartTableView(items) {
 		
 		for (var i = 0; i < items.length; i++) {
 			var item = items[i];
-			htmlString += "<tr>";
+			htmlString += "<tr id='cart-item-id-"+item.item_id+"'>";
 			
 			// item image
 			htmlString += "<td class='cart-table-item item-table-image'>";
@@ -211,7 +296,13 @@ function drawCartTableView(items) {
 
 };
 
-
+function removeElementFromDocument(element_id) {
+    var doc_element = document.getElementById(element_id);
+ 
+    if (doc_element != null) {
+    	doc_element.parentNode.removeChild(doc_element);
+    };
+}
 
 
 
