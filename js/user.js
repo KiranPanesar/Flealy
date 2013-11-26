@@ -7,8 +7,10 @@ window.onload = function() {
 
 	var start_index = window.location.href.indexOf("id=");
 
+	var user_id = "";
+
 	if (start_index == -1) {
-		parseUserData(getUserData());
+		user_id = getUserData()['user_id'];
 	} else {
 		start_index += 3;
 		var end_index   = window.location.href.indexOf("&", start_index);
@@ -16,9 +18,10 @@ window.onload = function() {
 		if (end_index == -1) {
 			end_index = window.location.href.length;
 		};
-
-		loadUserInfo(window.location.href.substring(start_index, end_index));
+		user_id = window.location.href.substring(start_index, end_index);
 	};
+
+	loadUserInfo(user_id);
 };
 
 function loadUserInfo(user_id) {
@@ -32,6 +35,10 @@ function loadUserInfo(user_id) {
 				handleError(api_request.responseText);
 				return;
 			} else {
+				if (getUserData()['user_id'] == JSON.parse(api_request.responseText)['user_id']) {
+					saveUserData(JSON.parse(api_request.responseText));
+				};
+				
 				parseUserData(JSON.parse(api_request.responseText));
 				loadItems(user_id);
 			};
@@ -47,10 +54,10 @@ function loadItems(user_id) {
 	api_request.onreadystatechange = function() {
 	        if (api_request.readyState == 4) {
 	                if (api_request.status != 200) {
-	                        handleError(api_request.responseText);
-	                        return;
+                        handleError(api_request.responseText);
+                        return;
 	                } else {
-	                        parseItemsJSON(api_request.responseText);
+                        parseItemsJSON(api_request.responseText);
 	                };
 	        };
 	}
@@ -58,7 +65,6 @@ function loadItems(user_id) {
 
 function parseItemsJSON(items) {
 	var items_table = document.getElementById("items-table");
-
 
 	items_json = JSON.parse(items);
 	
@@ -92,8 +98,6 @@ function parseItemsJSON(items) {
 };
 
 function parseUserData(response_json) {
-	console.log(response_json);
-
 	var user_picture = document.getElementById('user-picture');
 	user_picture.setAttribute("src", response_json['image_url']);
 
