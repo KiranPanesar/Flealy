@@ -1,6 +1,4 @@
 function showItemDialog(item) {
-	console.log("showing"+ item);
-
 	showOverlayDialog();
 	drawMapView(item.latitude, item.longitude);
 	drawItemInfoView(item);
@@ -18,7 +16,8 @@ function buyItem(item_id) {
 				handleError(api_request.responseText);
 				return;
 			} else {
-				clearUserData();
+				document.getElementById("buy-item").innerHTML = "Boom! Added!"
+				document.getElementById("buy-item").removeAttribute("onclick");
 				console.log(api_request.responseText);
 			};
 		};
@@ -67,13 +66,13 @@ function drawItemInfoView(item) {
 	buy_item.setAttribute("href", "#");
 	buy_item.setAttribute("onclick", "buyItem(" + item.item_id + ")");
 
-	buy_item.innerHTML = "Buy &pound;"+item.price;
+	buy_item.innerHTML = "Add to cart (&pound;"+item.price+")";
 	
 	var message_user = document.createElement("a");
 	message_user.setAttribute("class", "btn btn-info");
-	message_user.setAttribute("id", "message-user");
-	message_user.setAttribute("href", "#");
-	message_user.innerHTML = "Message Seller";
+	message_user.setAttribute("id", "view-user-profile");
+	message_user.setAttribute("href", "../");
+	message_user.innerHTML = "View Seller";
 
 	var item_detail_description = document.createElement("p");
 	item_detail_description.setAttribute("id", "item-detail-description");
@@ -82,11 +81,13 @@ function drawItemInfoView(item) {
 	button_container.appendChild(buy_item);
 	button_container.appendChild(message_user);
 
-	if (item.user_id == getUserData().user_id) {
-		var ownership_notification = document.createElement("p");
-		ownership_notification.innerHTML = "This is your item!";
-		ownership_notification.setAttribute("id", "item-ownership-notification");
-		button_container.appendChild(ownership_notification);		
+	if (getUserData() != null) {
+		if (item.user_id == getUserData().user_id) {
+			var ownership_notification = document.createElement("p");
+			ownership_notification.innerHTML = "This is your item!";
+			ownership_notification.setAttribute("id", "item-ownership-notification");
+			button_container.appendChild(ownership_notification);		
+		};
 	};
 
 	metadata_container.appendChild(item_name);
@@ -95,16 +96,3 @@ function drawItemInfoView(item) {
 
 	appendOverlayContentView(metadata_container);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

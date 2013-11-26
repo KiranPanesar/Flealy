@@ -103,14 +103,14 @@
 	width: 120px;
 }
 
-#message-user {
+#view-user-profile {
 	display: block;
 	background-color: #3498db;
 	margin-top: 5px;
 	width: 120px;
 }
 
-#message-user:hover {
+#view-user-profile:hover {
 	background-color: #2980b9;
 }
 
