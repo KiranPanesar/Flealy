@@ -104,6 +104,13 @@
 	color: #34495e;
 }
 
+#no-cart-items-paragraph {
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	color: #7f8c8d;
+}
+
 #cart-go-shopping-button {
 	position: absolute;
 	left: 40%;
