@@ -70,7 +70,7 @@ function drawItemInfoView(item) {
 	var message_user = document.createElement("a");
 	message_user.setAttribute("class", "btn btn-info");
 	message_user.setAttribute("id", "view-user-profile");
-	message_user.setAttribute("href", "../");
+	message_user.setAttribute("href", "../views/user.php?id="+item['user_id']);
 	message_user.innerHTML = "View Seller";
 
 	var item_detail_description = document.createElement("p");
