@@ -33,7 +33,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
 			switch ($_POST['action']) {
 				// Register a user
 				case 'user':
-					echo create_user($_POST['username'],  $_POST['email'], $_POST['password'], 'http://placecage.com/200/200');
+					echo create_user($_POST['username'],  $_POST['email'], $_POST['password'], 'http://placehold.it/200/200');
 					break;
 				case 'session':
 					echo sign_in($_POST['username'], $_POST['password']);
