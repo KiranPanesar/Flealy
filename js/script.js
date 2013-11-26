@@ -15,7 +15,7 @@ function drawNavBar() {
 	document.writeln("<div class='nav-bar'>");
 	document.writeln("<a href='../views/browse.php'><img id='nav-bar-logo' src='../img/nav-logo.png'/></a>");
 	document.writeln("<ul id='left-items'>");
-	document.writeln("<li> <a href='../views/browse.php'>HOME</a>");
+	// document.writeln("<li> <a href='../views/browse.php'>HOME</a>");
 	// document.writeln("<li> <a href='#'>PROFILE</a>");
 	document.writeln("</ul>");
 	
@@ -23,6 +23,7 @@ function drawNavBar() {
 	if (getUserData()) {
 		document.writeln("<li> <a href='../views/user.php'>" + getUserData().username + "</a>");
 		document.writeln("<li> <a href='#' class='btn btn-success' onclick='showUserCart()'>CART</a>");
+		document.writeln("<li> <a href='#' class='btn btn-info' onclick='showListItemDialog()'>LIST ITEM</a>");
 		// document.writeln("<li> <a href='#' onclick='signOut()'>SIGN OUT</a>");
 	} else {
 		document.writeln("<li> <a href='../views/login.php'>SIGN IN</a>");
