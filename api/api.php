@@ -2,7 +2,7 @@
 
 // include 'db_wrapper.php';
 
-$endpoints = array('items', 'item', 'user', 'session', 'cart');
+$endpoints = array('items', 'item', 'user', 'session', 'cart', 'purchase');
 
 switch ($_SERVER['REQUEST_METHOD']) {
 	case 'GET':
@@ -10,6 +10,9 @@ switch ($_SERVER['REQUEST_METHOD']) {
 			switch ($_GET['action']) {
 				case 'items':
 					echo get_items($_GET['lat'], $_GET['lon'], $_GET['range'], $_GET['user']);
+					break;
+				case 'item':
+					# code...
 					break;
 				case 'user':
 					echo get_user($_GET['id']);
@@ -37,8 +40,11 @@ switch ($_SERVER['REQUEST_METHOD']) {
 					echo create_item($_POST['name'], $_POST['description'], $_POST['price'], $_POST['image_url'], $_POST['lat'], $_POST['lon']);
 					break;
 				case 'cart':
-					echo "adding " . $_POST['id'];
 					echo add_item_to_cart($_POST['id']);
+					break;
+				case 'purchase':
+					// echo purchase_item($_POST['item_id'], $_POST['card_id'], $_POST['transaction_id']);
+					echo checkout_cart($_POST['card_id'], $_POST['transaction_id']);
 					break;
 				default:
 					# code...
@@ -95,6 +101,16 @@ function get_items($lat, $lon, $range, $user_id) {
 		}
 
 		return json_encode($results_array);
+	}
+}
+
+function get_item($item_id) {
+	session_start();
+	$select_query = "SELECT * FROM items WHERE item_id='$item_id'";
+	$result = db_connection() -> query($select_query);
+
+	while ($row = $result->fetch_assoc()) {
+		return json_encode($row);
 	}
 }
 
@@ -155,6 +171,51 @@ function create_item($name, $description, $price, $image_url, $latitude, $longit
 		}
 	} else {
 		return json_encode(array('error' => array('code'=>'400', 'message'=>'Not signed in')));
+	}
+}
+
+
+function checkout_cart($card_id, $transaction_id) {
+	session_start();
+	if (isset($_SESSION['user'])) {
+		$user_id = $_SESSION['user'];
+
+		$select_query = "SELECT items.item_id, items.name, items.image_url, items.price FROM carts INNER JOIN items on items.item_id = carts.item_id AND carts.user_id = '$user_id'";
+
+		if ($result = db_connection()->query($select_query)) {
+			$results_array = array();
+			$total_cost    = 0.0;
+
+			while ($row = $result->fetch_assoc()) {
+				$results_array[] = $row;
+				$total_cost += $row['price'];
+			}
+			$final_array = array('summary' => array('number_of_items' => count($results_array), 'total_price' => $total_cost), 'items' => json_encode($results_array));
+
+			for ($i=0; $i < $final_array['summary']['number_of_items']; $i++) {
+				$item = json_decode($final_array['items'])[$i];
+				purchase_item($item->item_id, $card_id, $transaction_id);
+			}
+
+			clear_basket();
+			return json_encode(array('response'=>'success'));
+		} else {
+			return json_encode(array('error' => array('code'=>'500', 'message'=>'Could not create user account')));
+		}
+
+	}
+}
+
+function purchase_item($item_id, $card_id, $transaction_id) {
+	session_start();
+	$purchase_time = time();
+
+	if (isset($_SESSION['user'])) {
+		$user_id = $_SESSION['user'];
+
+		$insert_query = "INSERT INTO purchases (item_id, buyer_id, card_id, stripe_transaction_id, purchase_epoch) VALUES ('$item_id', '$user_id', '$card_id', '$transaction_id', '$purchase_time')";
+
+		$result = db_connection()->query($insert_query);
 	}
 }
 
@@ -252,7 +313,7 @@ function remove_item_from_cart($item_id) {
 		// echo $delete_query;
 
 		if (db_connection()->query($delete_query)) {
-			return json_encode(array('response'=>'success'));
+			return get_cart();
 		}
 
 	} else {
