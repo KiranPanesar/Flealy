@@ -110,10 +110,24 @@ function dropPins(position) {
 	for (var i = 0; i < browse_items_json.length; i++) {
 		var item = JSON.parse(browse_items_json[i]);
 
-		var marker = new google.maps.Marker({			
-		    position: new google.maps.LatLng(item.latitude, item.longitude),
-		    map: map,
-		    title: 'Hello World!'
-		});
+		dropPin(map, item);
 	};
 };
+
+function dropPin(map, item) {
+	var marker = new google.maps.Marker({			
+	    position: new google.maps.LatLng(item.latitude, item.longitude),
+	    map: map,
+	    title: item['item_id']
+	});
+
+	google.maps.event.addListener(marker, "click", function(e) {
+		showItem(marker.title);
+	});
+}
+
+
+
+
+
+
