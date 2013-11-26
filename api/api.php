@@ -27,6 +27,11 @@ switch ($_SERVER['REQUEST_METHOD']) {
 		}
 		break;
 	case 'POST':
+		echo $_POST['file'];
+		file_put_contents('img.png', file_get_contents("php://input"));
+		print_r($_GET);
+		// echo file_get_contents("php://input");
+
 		if (isset($_POST['action']) && in_array($_POST['action'], $endpoints)) {
 			switch ($_POST['action']) {
 				// Register a user
@@ -119,7 +124,7 @@ function get_user($user_id) {
 	session_start();
 	if (isset($_SESSION['user'])) {
 		$user_id = $_SESSION['user'];
-		$select_query = "SELECT user_id, username, email, image_url FROM users WHERE user_id='$user_id'";
+		$select_query = "SELECT user_id, username, email, image_url, location, description, sales FROM users WHERE user_id='$user_id'";
 		
 		if ($result = db_connection()->query($select_query)) {
 			while ($row = $result->fetch_assoc()) {
