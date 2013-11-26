@@ -5,8 +5,25 @@ window.onload = function() {
 
 	event.preventDefault();
 
+	var start_index = window.location.href.indexOf("id=");
+
+	if (start_index == -1) {
+		parseUserData(getUserData());
+	} else {
+		start_index += 3;
+		var end_index   = window.location.href.indexOf("&", start_index);
+		
+		if (end_index == -1) {
+			end_index = window.location.href.length;
+		};
+
+		loadUserInfo(window.location.href.substring(start_index, end_index));
+	};
+};
+
+function loadUserInfo(user_id) {
 	var api_request = new XMLHttpRequest();
-	api_request.open("GET", "../api/api.php?action=items&user=13", true);
+	api_request.open("GET", "../api/api.php?action=user&id="+user_id, true);
 	api_request.send();
 
 	api_request.onreadystatechange = function() {
@@ -15,12 +32,29 @@ window.onload = function() {
 				handleError(api_request.responseText);
 				return;
 			} else {
-				parseItemsJSON(api_request.responseText);
+				parseUserData(JSON.parse(api_request.responseText));
+				loadItems(user_id);
 			};
 		};
 	}
-};
+}
 
+function loadItems(user_id) {
+	var api_request = new XMLHttpRequest();
+	api_request.open("GET", "../api/api.php?action=items&user="+user_id, true);
+	api_request.send();
+
+	api_request.onreadystatechange = function() {
+	        if (api_request.readyState == 4) {
+	                if (api_request.status != 200) {
+	                        handleError(api_request.responseText);
+	                        return;
+	                } else {
+	                        parseItemsJSON(api_request.responseText);
+	                };
+	        };
+	}
+}
 
 function parseItemsJSON(items) {
 	var items_table = document.getElementById("items-table");
@@ -56,6 +90,25 @@ function parseItemsJSON(items) {
 	document.getElementById("browser").style.opacity = 1.0;
 
 };
+
+function parseUserData(response_json) {
+	console.log(response_json);
+
+	var user_picture = document.getElementById('user-picture');
+	user_picture.setAttribute("src", response_json['image_url']);
+
+	var username_label = document.getElementById("user-name");
+	username_label.innerHTML = response_json['username'];
+
+	var userdescription_label = document.getElementById("user-description");
+	userdescription_label.innerHTML = response_json['description'];
+
+	var location_label = document.getElementById("location-label");
+	location_label.innerHTML = response_json['location'];
+
+	var sales_label = document.getElementById("sales-label");
+	sales_label.innerHTML = response_json['sales']
+}
 
 function showItem(id) {
 	for (var i = 0; i < items_json.length; i++) {

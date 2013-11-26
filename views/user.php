@@ -31,7 +31,7 @@
 
 	<div id="container">
 		<div id="user-info">
-			<div id="user-picture"></div>
+			<img id="user-picture"></img>
 			<h2 id="user-name">Kiran Panesar<br/><small>kiranp</small></h2>
 			<h3 id="user-description">My shop is dedicated to selling high-quality, hand-made soaps. Need a special order? Just let me know and I'll be happy to help!</h3>
 			<hr/>
