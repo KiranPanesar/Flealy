@@ -36,9 +36,9 @@ function loadUserInfo(user_id) {
 				return;
 			} else {
 				if (getUserData()['user_id'] == JSON.parse(api_request.responseText)['user_id']) {
-					saveUserData(JSON.parse(api_request.responseText));
+					saveUserData(api_request.responseText);
 				};
-				
+
 				parseUserData(JSON.parse(api_request.responseText));
 				loadItems(user_id);
 			};
