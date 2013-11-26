@@ -17,8 +17,6 @@ function showUserCart() {
 	});
 
 	document.getElementById('checkout-button').addEventListener('click', function(e) {
-
-	console.log(cart_items_json.summary.total_price);
 		// Open Checkout with further options
 		handler.open({
 			name: 'Flealy Checkout',
@@ -45,7 +43,6 @@ function loadUserCart() {
 				handleError(api_request.responseText);
 				return;
 			} else {
-				console.log(api_request.responseText);
 				drawCartTableView(api_request.responseText);
 				
 				if (JSON.parse(cart_items_json.items).length > 0) {
@@ -58,8 +55,6 @@ function loadUserCart() {
 
 function clearCart() {
 	if (confirm("Are you sure you want to delete all the items from your cart?")) {
-		console.log("yessir");
-
 		var api_request = new XMLHttpRequest();
 		api_request.open("DELETE", "../api/api.php?action=cart", true);
 		api_request.send();
@@ -70,13 +65,10 @@ function clearCart() {
 					handleError(api_request.responseText);
 					return;
 				} else {
-					console.log(api_request.responseText);
 					drawCartTableView(api_request.responseText);
 				};
 			};
 		};
-	} else {
-		console.log("nope");
 	};
 }
 
@@ -84,7 +76,6 @@ function removeItemFromCart(item_id) {
 	var item = null;
 	var items = JSON.parse(cart_items_json.items);
 	for (var i = 0; i < items.length; i++) {
-		console.log(items[i]);
 		if (items[i].item_id == item_id) {
 			item = items[i];
 			break;
@@ -104,7 +95,6 @@ function removeItemFromCart(item_id) {
 						return;
 					} else {
 						cart_items_json = JSON.parse(api_request.responseText);
-						console.log(cart_items_json);
 
 						removeElementFromDocument("cart-item-id-" + item_id);
 						if (JSON.parse(cart_items_json.items).length > 0) {
@@ -156,9 +146,6 @@ function successfullyCheckedOut(token) {
 				successMessageContainer.appendChild(goShoppingButton);
 
 				appendOverlayContentView(successMessageContainer);
-
-
-				console.log(api_request.responseText);
 			};
 		};
 	};

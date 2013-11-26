@@ -42,7 +42,6 @@ function drawListItemForm() {
 	    var im = new Image();
 
 	    im.src = document.getElementById("list-item-upload-button").value;
-	    console.log(im.width + "," + im.height);
 		
 	}, false);
 

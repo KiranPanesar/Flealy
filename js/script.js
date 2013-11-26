@@ -7,8 +7,7 @@ function goHome() {
 };
 
 function handleError(responseText) {
-	console.log(responseText);
-	// alert(JSON.parse(responseText).error.message);
+	alert(JSON.parse(responseText).error.message);
 };
 
 function drawNavBar() {
@@ -67,7 +66,6 @@ function clearUserData() {
 	var cookies = document.cookie.split(";");
     for (var i = 0; i < cookies.length; i++) {
     	var cookie = cookies[i];
-    	console.log(cookie);
     	var eqPos = cookie.indexOf("=");
     	var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
     	document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
@@ -82,8 +80,6 @@ function delete_cookie(name, path, domain)
 
 // Function to destroy the user's session
 function signOut() {
-	console.log("signing out");
-
 	event.preventDefault();
 
 	var api_request = new XMLHttpRequest();
@@ -98,7 +94,6 @@ function signOut() {
 				return;
 			} else {
 				clearUserData();
-				console.log(api_request.responseText);
 			};
 		};
 	};

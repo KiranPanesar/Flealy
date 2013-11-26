@@ -18,7 +18,6 @@ function buyItem(item_id) {
 			} else {
 				document.getElementById("buy-item").innerHTML = "Boom! Added!"
 				document.getElementById("buy-item").removeAttribute("onclick");
-				console.log(api_request.responseText);
 			};
 		};
 	};
