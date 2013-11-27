@@ -125,9 +125,3 @@ function dropPin(map, item) {
 		showItem(marker.title);
 	});
 }
-
-
-
-
-
-

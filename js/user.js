@@ -124,7 +124,6 @@ function showItem(id) {
 	};
 }
 
-
 function itemHTML(name, image_url, price, id) {
 	var onclickArgument = "showItem("+id+")"
 	return "<div class='item-table-summary' id='" + id + "' onclick='"+onclickArgument+"';> <a href='#'> <img class='item-image' src='"+image_url+"'/><p class='item-name'>" + name + "</p> <p class='item-price'>&pound;" + price + "</p> </a> </div>";
