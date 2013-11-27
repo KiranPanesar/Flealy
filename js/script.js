@@ -98,3 +98,11 @@ function signOut() {
 		};
 	};
 };
+
+function removeElementFromDocument(element_id) {
+    var doc_element = document.getElementById(element_id);
+ 
+    if (doc_element != null) {
+    	doc_element.parentNode.removeChild(doc_element);
+    };
+}
