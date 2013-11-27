@@ -114,6 +114,12 @@
 	background-color: #2980b9;
 }
 
+#delete-item-button {
+	display: block;
+	margin-top: 5px;
+	width: 120px;
+}
+
 #item-ownership-notification {
 	text-align:center; 
 	font-size:10pt;
@@ -125,4 +131,24 @@
 	margin-left: 27%;
 	margin-top: 5px;
 	width: 70%;
+}
+
+#deleted-item-container {
+	margin-top: 20%;
+	width: 100%;
+}
+
+#deleted-item-title {
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	color: #34495e;
+}
+
+#delete-dismiss-button {
+	position: absolute;
+	left: 40%;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
 }

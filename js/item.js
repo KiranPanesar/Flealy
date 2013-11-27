@@ -23,6 +23,25 @@ function buyItem(item_id) {
 	};
 }
 
+function deleteItem(item_id) {
+	if (confirm("Are you sure you want to delete this item?")) {
+		var api_request = new XMLHttpRequest();
+		api_request.open("DELETE", "../api/api.php?action=item&id=" + item_id, true);
+		api_request.send();
+
+		api_request.onreadystatechange = function() {
+			if (api_request.readyState == 4) {
+				if (api_request.status != 200) {
+					handleError(api_request.responseText);
+					return;
+				} else {
+					itemDeleted();
+				};
+			};
+		};
+	};
+}
+
 function drawMapView(lat, lon) {
 	var map_view = document.createElement("div");
 	map_view.setAttribute("id", "item-map-canvas");
@@ -67,25 +86,37 @@ function drawItemInfoView(item) {
 
 	buy_item.innerHTML = "Add to cart (&pound;"+item.price+")";
 	
-	var message_user = document.createElement("a");
-	message_user.setAttribute("class", "btn btn-info");
-	message_user.setAttribute("id", "view-user-profile");
-	message_user.setAttribute("href", "../views/user.php?id="+item['user_id']);
-	message_user.innerHTML = "View Seller";
-
 	var item_detail_description = document.createElement("p");
 	item_detail_description.setAttribute("id", "item-detail-description");
 	item_detail_description.innerHTML = item.description;
 
 	button_container.appendChild(buy_item);
-	button_container.appendChild(message_user);
 
 	if (getUserData() != null) {
 		if (item.user_id == getUserData().user_id) {
 			var ownership_notification = document.createElement("p");
 			ownership_notification.innerHTML = "This is your item!";
 			ownership_notification.setAttribute("id", "item-ownership-notification");
-			button_container.appendChild(ownership_notification);		
+
+			var delete_item_button = document.createElement("a");
+			delete_item_button.setAttribute("class", "btn btn-cancel");
+			delete_item_button.setAttribute("id", "delete-item-button");
+			delete_item_button.setAttribute("href", "#");
+			delete_item_button.setAttribute("onclick", "deleteItem(" + item.item_id + ")");
+			delete_item_button.innerHTML = "Delete Item";
+
+			button_container.appendChild(delete_item_button);
+			button_container.appendChild(ownership_notification);
+
+
+		} else {
+			var message_user = document.createElement("a");
+			message_user.setAttribute("class", "btn btn-info");
+			message_user.setAttribute("id", "view-user-profile");
+			message_user.setAttribute("href", "../views/user.php?id="+item['user_id']);
+			message_user.innerHTML = "View Seller";
+
+			button_container.appendChild(message_user);
 		};
 	};
 
@@ -94,4 +125,30 @@ function drawItemInfoView(item) {
 	metadata_container.appendChild(item_detail_description);
 
 	appendOverlayContentView(metadata_container);
+}
+
+function itemDeleted() {
+	removeElementFromDocument("metadata-container");
+	removeElementFromDocument("item-map-canvas");
+
+	var successMessageHeader = document.createElement("h2");
+	successMessageHeader.setAttribute("id", "deleted-item-title");
+	successMessageHeader.innerHTML = "Item Deleted!";
+
+	var goShoppingButton = document.createElement("a");
+	goShoppingButton.setAttribute("class", "btn btn-info");
+	goShoppingButton.setAttribute("id", "delete-dismiss-button");
+	goShoppingButton.setAttribute("onclick", "hideOverlayDialog()");
+	goShoppingButton.setAttribute("href", "#");
+
+	goShoppingButton.innerHTML = "Done";
+
+	var successMessageContainer = document.createElement("div");
+	successMessageContainer.setAttribute("id", "deleted-item-container");
+
+	successMessageContainer.appendChild(successMessageHeader);
+	successMessageContainer.appendChild(goShoppingButton);
+
+	appendOverlayContentView(successMessageContainer);
+
 }
