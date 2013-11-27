@@ -41,6 +41,19 @@ p {
 	outline: none;
 }
 
+.text-area {
+	font-family: Lato;
+	font-size: 12pt;
+	color: #34495e;
+	background-color: white;
+	outline: none;
+}
+
+.text-area:focus {
+	background-color: #E6EFFF;
+	outline: none;
+}
+
 .btn {
 	font-family: Lato-Light;
 	font-size: 12pt;
