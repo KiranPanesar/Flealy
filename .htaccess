@@ -1,2 +1,5 @@
 RewriteEngine On
+
 RewriteRule ^/api/ /api/api.php
+
+RewriteRule ^/browse/ ./views/browse.php [L]
