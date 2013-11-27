@@ -36,12 +36,17 @@ function get_item($item_id) {
 	}
 }
 
-function create_item($name, $description, $price, $image_url, $latitude, $longitude) {
+function create_item($name, $description, $price, $image_data, $latitude, $longitude) {
+
 	session_start();
-
 	if (isset($_SESSION['user'])) {
-
 		$user_id = $_SESSION['user'];
+
+		$file_name = sha1($name.uniqid("img_")).".png"; // Create a unique file name for image
+		file_put_contents(dirname(__FILE__) . "/media/".$file_name, $image_data);
+
+		$image_url = "http://localhost:8888/api/media/".$file_name;
+
 		$insert_query = "INSERT INTO items (name, description, price, image_url, latitude, longitude, user_id) VALUES ('$name', '$description', '$price', '$image_url', '$latitude', '$longitude', '$user_id')";
 
 		if ($result = db_connection()->query($insert_query)) {
@@ -63,7 +68,9 @@ function purchase_item($item_id, $card_id, $transaction_id) {
 
 		$insert_query = "INSERT INTO purchases (item_id, buyer_id, card_id, stripe_transaction_id, purchase_epoch) VALUES ('$item_id', '$user_id', '$card_id', '$transaction_id', '$purchase_time')";
 
-		$result = db_connection()->query($insert_query);
+		if ($result = db_connection()->query($insert_query)) {
+			return json_encode(array('code' => 200, 'message' => 'success'));
+		}
 	}
 }
 
@@ -81,6 +88,19 @@ function get_purchase_history() {
 			}
 
 			return json_encode($results_array);
+		}
+	}
+}
+
+function delete_item($item_id) {
+	session_start();
+
+	if (isset($_SESSION['user'])) {
+		$user_id = $_SESSION['user'];
+		$delete_query = "DELETE FROM items WHERE item_id='$item_id' AND user_id='$user_id'";
+
+		if ($result=db_connection()->query($delete_query)) {
+			return json_encode(array('code' => 200, 'message' => 'success'));
 		}
 	}
 }

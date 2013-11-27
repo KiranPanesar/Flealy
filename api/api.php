@@ -34,10 +34,17 @@ switch ($_SERVER['REQUEST_METHOD']) {
 		}
 		break;
 	case 'POST':
-		if (isset($_POST['action']) && in_array($_POST['action'], $endpoints)) {
+		if ((isset($_POST['action']) && in_array($_POST['action'], $endpoints)) || (isset($_GET['action']) && in_array($_GET['action'], $endpoints))) {
 			$_POST = escape_arguments($_POST);
+			$action = "";
 
-			switch ($_POST['action']) {
+			if (isset($_POST['action'])) {
+				$action = $_POST['action'];
+			} else {
+				$action = $_GET['action'];
+			}
+
+			switch ($action) {
 				// Register a user
 				case 'user':
 					echo create_user($_POST['username'],  $_POST['email'], $_POST['password'], 'http://placehold.it/200/200');
@@ -46,7 +53,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
 					echo sign_in($_POST['username'], $_POST['password']);
 					break;
 				case 'item':
-					echo create_item($_POST['name'], $_POST['description'], $_POST['price'], $_POST['image_url'], $_POST['lat'], $_POST['lon']);
+					$_GET = escape_arguments($_GET);
+					echo create_item($_GET['name'], $_GET['description'], $_GET['price'], file_get_contents("php://input"), $_GET['lat'], $_GET['lon']);
 					break;
 				case 'cart':
 					echo add_item_to_cart($_POST['id']);
@@ -76,6 +84,9 @@ switch ($_SERVER['REQUEST_METHOD']) {
 					} else {
 						echo clear_basket();
 					}
+					break;
+				case 'item':
+					echo delete_item($_GET['id']);
 					break;
 				default:
 					# code...
