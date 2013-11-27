@@ -8,7 +8,9 @@ $endpoints = array('items', 'item', 'user', 'session', 'cart', 'purchase');
 
 switch ($_SERVER['REQUEST_METHOD']) {
 	case 'GET':
-		if (isset($_GET['action']) && in_array($_GET['action'], $endpoints)) {	
+		if (isset($_GET['action']) && in_array($_GET['action'], $endpoints)) {
+			$_GET = escape_arguments($_GET);
+
 			switch ($_GET['action']) {
 				case 'items':
 					echo get_items($_GET['lat'], $_GET['lon'], $_GET['range'], $_GET['user']);
@@ -30,6 +32,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
 		break;
 	case 'POST':
 		if (isset($_POST['action']) && in_array($_POST['action'], $endpoints)) {
+			$_POST = escape_arguments($_POST);
+
 			switch ($_POST['action']) {
 				// Register a user
 				case 'user':
@@ -58,6 +62,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
 		// So PHP doesn't pass data via the $_DELETE[] array, so I use GET to send the 
 		// data. 
 		if (isset($_GET['action']) && in_array($_GET['action'], $endpoints)) {
+			$_GET = escape_arguments($_GET);
+
 			switch ($_GET['action']) {
 				case 'session':
 					echo sign_out();
@@ -78,6 +84,20 @@ switch ($_SERVER['REQUEST_METHOD']) {
 	default:
 		# code...
 		break;
+}
+
+function escape_arguments($arguments) {
+
+	$mysqli = db_connection();
+	$esc_arguments = [];
+
+	foreach ($arguments as $name => $value) {
+		$esc_arguments[$name] = $mysqli->real_escape_string($value);
+	}
+
+	// echo json_encode($esc_arguments);
+
+	return $esc_arguments;
 }
 
 function db_connection() {

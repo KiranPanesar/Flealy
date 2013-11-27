@@ -27,9 +27,7 @@ function findNearbyItems(lat, lon) {
 				handleError(api_request.responseText);
 				return;
 			} else {
-				// alert(api_request.responseText);
 				parseItemsJSON(api_request.responseText);
-				// window.location.replace("../views/browse.php")
 			};
 		};
 	}
