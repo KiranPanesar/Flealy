@@ -4,7 +4,7 @@ include 'items.php';
 include 'session.php';
 include 'cart.php';
 
-$endpoints = array('items', 'item', 'user', 'session', 'cart', 'purchase');
+$endpoints = array('items', 'item', 'user', 'session', 'cart', 'purchase', 'purchases');
 
 switch ($_SERVER['REQUEST_METHOD']) {
 	case 'GET':
@@ -23,6 +23,9 @@ switch ($_SERVER['REQUEST_METHOD']) {
 					break;
 				case 'cart':
 					echo get_cart();
+					break;
+				case 'purchases':
+					echo get_purchase_history();
 					break;
 			}
 
@@ -49,7 +52,6 @@ switch ($_SERVER['REQUEST_METHOD']) {
 					echo add_item_to_cart($_POST['id']);
 					break;
 				case 'purchase':
-					// echo purchase_item($_POST['item_id'], $_POST['card_id'], $_POST['transaction_id']);
 					echo checkout_cart($_POST['card_id'], $_POST['transaction_id']);
 					break;
 				default:
