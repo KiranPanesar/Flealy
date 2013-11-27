@@ -65,7 +65,8 @@ function clearCart() {
 					handleError(api_request.responseText);
 					return;
 				} else {
-					drawCartTableView(api_request.responseText);
+					document.getElementById("basket-total-label").innerHTML = "";
+					drawCartTableView(null);
 				};
 			};
 		};
@@ -95,10 +96,19 @@ function removeItemFromCart(item_id) {
 						return;
 					} else {
 						cart_items_json = JSON.parse(api_request.responseText);
-
 						removeElementFromDocument("cart-item-id-" + item_id);
+						console.log(cart_items_json);
+
 						if (JSON.parse(cart_items_json.items).length > 0) {
 							document.getElementById("basket-total-label").innerHTML = "Total &pound;"+cart_items_json.summary.total_price;
+						} else {
+							var table_container = document.getElementById('cart-table-container');
+							
+							if (table_container != null) {
+							    table_container.parentNode.removeChild(table_container);
+							};
+
+							drawNoItemsNotice();
 						};
 					};
 				};
@@ -206,53 +216,67 @@ function drawCartTableView(items) {
 
 	cart_items_json = JSON.parse(items);
 
-	var items = [];
-	
-	if (JSON.parse(cart_items_json.items).length > 0) {
-		items = JSON.parse(cart_items_json.items);
+	if (items != null) {
+		var items = [];
+		var htmlString = "";
+		if (JSON.parse(cart_items_json.items).length > 0) {
+			items = JSON.parse(cart_items_json.items);
+			for (var i = 0; i < items.length; i++) {
+				var item = items[i];
+				htmlString += "<tr id='cart-item-id-"+item.item_id+"'>";
+				
+				// item image
+				htmlString += "<td class='cart-table-item item-table-image'>";
+				htmlString += "<img src='"+item.image_url+"' />";
+				htmlString += "<td>";
+
+				// item name
+				htmlString += "<td class='cart-table-item item-table-name'>";
+				htmlString += "<p>"+item.name+"</p>";
+				htmlString += "<td>";
+
+				// item price
+				htmlString += "<td class='cart-table-item item-table-price'>";
+				htmlString += "<p>&pound;"+item.price+"</p>";
+				htmlString += "<td>";
+
+				// delete item
+				var deleteEvent = "removeItemFromCart(" + item.item_id + ")"
+				htmlString += "<td class='cart-table-item item-table-remove'>";
+				htmlString += "<a href='#' class='btn btn-cancel' onclick = '"+deleteEvent+"'>Remove</a>";
+				htmlString += "<td>";
+
+				htmlString += "</tr>";
+			};
+			
+			items_table.innerHTML = htmlString; 
+
+			var table_container = document.createElement("div");
+			table_container.setAttribute("id", "cart-table-container");
+			table_container.appendChild(items_table);
+
+			appendOverlayContentView(table_container);
+		} else {
+			var table_container = document.getElementById('cart-table-container');
+			
+			if (table_container != null) {
+			    table_container.parentNode.removeChild(table_container);
+			};
+			drawNoItemsNotice();
+		};
+	} else {
+		var table_container = document.getElementById('cart-table-container');
+		
+		if (table_container != null) {
+		    table_container.parentNode.removeChild(table_container);
+		};
+
+		drawNoItemsNotice();
 	};
 
-	var htmlString = "";
+};
 
-	if (items.length > 0) {
-		
-		for (var i = 0; i < items.length; i++) {
-			var item = items[i];
-			htmlString += "<tr id='cart-item-id-"+item.item_id+"'>";
-			
-			// item image
-			htmlString += "<td class='cart-table-item item-table-image'>";
-			htmlString += "<img src='"+item.image_url+"' />";
-			htmlString += "<td>";
-
-			// item name
-			htmlString += "<td class='cart-table-item item-table-name'>";
-			htmlString += "<p>"+item.name+"</p>";
-			htmlString += "<td>";
-
-			// item price
-			htmlString += "<td class='cart-table-item item-table-price'>";
-			htmlString += "<p>&pound;"+item.price+"</p>";
-			htmlString += "<td>";
-
-			// delete item
-			var deleteEvent = "removeItemFromCart(" + item.item_id + ")"
-			htmlString += "<td class='cart-table-item item-table-remove'>";
-			htmlString += "<a href='#' class='btn btn-cancel' onclick = '"+deleteEvent+"'>Remove</a>";
-			htmlString += "<td>";
-
-			htmlString += "</tr>";
-		};
-	
-		items_table.innerHTML = htmlString; 
-
-		var table_container = document.createElement("div");
-		table_container.setAttribute("id", "cart-table-container");
-		table_container.appendChild(items_table);
-
-		appendOverlayContentView(table_container);
-
-	} else {
+function drawNoItemsNotice() {
 		var noItemsHeader = document.createElement("h2");
 		noItemsHeader.setAttribute("id", "no-cart-items-title");
 		noItemsHeader.innerHTML = "Nothing in your shopping cart";
@@ -279,9 +303,7 @@ function drawCartTableView(items) {
 			cart_footer_bar.parentNode.removeChild(cart_footer_bar);
 		};
 
-	};
-
-};
+}
 
 function removeElementFromDocument(element_id) {
     var doc_element = document.getElementById(element_id);
