@@ -1,0 +1,80 @@
+#list-item-map-canvas {
+	height:50%;
+	width: 100%;
+	left: 0;
+}
+
+#list-item-form {
+	width: 70%;
+	margin-top: -50px;
+	margin-left: 200px;
+}
+
+#add-image-paragraph {
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 40%;
+	width: 85%;
+	color:white;
+	text-align: center;
+}
+
+#upload-image-div {
+	background-color: #3498db;
+	height:150px;
+	width: 150px;
+	border-radius: 100%;
+	margin-left: 20px;
+	margin-top: -90px;
+
+	overflow: hidden;
+	position: relative;
+
+	box-shadow: -1px -1px 5px rgba(52, 73, 94,0.5);
+
+	border-style:solid;
+	border-color: #D3D9DE;
+	border-width:5px;
+}
+
+#list-item-upload-button {
+	height:150px;
+	width: 150px;
+	opacity: 0;
+	display: inline;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+#upload-image-view {
+	height:100%;
+	display: inline;
+}
+
+#list-item-name {
+	display: inline;
+	color: black;
+	position: relative;
+	color: #34495e;
+	width: 75%;
+	text-align: left;
+}
+
+#list-item-price {
+	width: 24%;
+	font-size: 14pt;
+	float:right;
+}
+
+#list-item-description {
+	margin-top: 5px; 
+	width: 100%;
+	height: 90px;
+	resize:none;
+}
+
+#list-item-submit {
+	margin-top: 5px;
+	width: 100%;
+}
