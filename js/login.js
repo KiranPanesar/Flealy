@@ -16,8 +16,10 @@ document.getElementById("login-form").addEventListener('submit', function(event)
 				handleError(api_request.responseText);
 				return;
 			} else {
-				saveUserData(api_request.responseText);
-				window.location.replace("../views/browse.php")
+				console.log(api_request.responseText);
+				saveUserData(JSON.stringify(api_request.responseText));
+				console.log(getUserData());
+				// window.location.replace("../views/browse.php")
 			};
 		};
 	}

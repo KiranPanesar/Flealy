@@ -20,12 +20,12 @@ function drawNavBar() {
 	
 	document.writeln("<ul id='right-items'>");
 	if (getUserData()) {
-		document.writeln("<li> <a href='../views/user.php'>" + getUserData().username + "</a>");
-		document.writeln("<li> <a href='#' class='btn btn-success' onclick='showUserCart()'>CART</a>");
-		document.writeln("<li> <a href='#' class='btn btn-info' onclick='showListItemDialog()'>LIST ITEM</a>");
+		document.writeln("<li> <a href='../views/user.php'>" + getUserData().username + "</a></li>");
+		document.writeln("<li> <a href='#' class='btn btn-success' onclick='showUserCart()'>CART</a></li>");
+		document.writeln("<li> <a href='#' class='btn btn-info' onclick='showListItemDialog()'>LIST ITEM</a></li>");
 		// document.writeln("<li> <a href='#' onclick='signOut()'>SIGN OUT</a>");
 	} else {
-		document.writeln("<li> <a href='../views/login.php'>SIGN IN</a>");
+		document.writeln("<li> <a href='../views/login.php'>SIGN IN</a></li>");
 	};
 	
 	document.writeln("</ul>");
@@ -57,7 +57,7 @@ function getUserData() {
 			end_index = cookie.length;
 		};
 
-		return JSON.parse(cookie.substring(start_index, end_index));
+		return JSON.parse(JSON.parse(cookie.substring(start_index, end_index)));
 	};
 };
 
