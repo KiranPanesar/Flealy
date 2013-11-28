@@ -11,15 +11,6 @@ window.onload = function() {
 	document.getElementById("sorting-selector").addEventListener("change", function() {
 		findNearbyItems(current_position.latitude, current_position.longitude, document.getElementById("sorting-selector").value);
 	}, false);
-
-	// if (navigator.geolocation) {
-	// 	navigator.geolocation.getCurrentPosition(function(position) {
-	// 		initialize(position.coords.latitude, position.coords.longitude);
-	// 		var positions = new Array();
-
-	// 		dropPins(position, positions)
-	// 	});
-	// };
 };
 
 function searchTermChanged() {
