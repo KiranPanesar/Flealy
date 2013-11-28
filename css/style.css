@@ -54,6 +54,11 @@ p {
 	outline: none;
 }
 
+.select {
+	width: 200px;
+	height: 30px
+}
+
 .btn {
 	font-family: Lato-Light;
 	font-size: 12pt;

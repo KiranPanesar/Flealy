@@ -1,8 +1,16 @@
+var current_position = null;
+var last_search_term = "";
+
 window.onload = function() {
 	navigator.geolocation.getCurrentPosition(function(position) {
+		current_position = position;
 		findNearbyItems(position.coords.latitude, position.coords.longitude);
 		initializeMap(position.coords.latitude, position.coords.longitude);
 	});
+	
+	document.getElementById("sorting-selector").addEventListener("change", function() {
+		findNearbyItems(current_position.latitude, current_position.longitude, document.getElementById("sorting-selector").value);
+	}, false);
 
 	// if (navigator.geolocation) {
 	// 	navigator.geolocation.getCurrentPosition(function(position) {
@@ -14,11 +22,32 @@ window.onload = function() {
 	// };
 };
 
+function searchTermChanged() {
+	console.log(document.getElementById("search-term").value);
+	
+	if (document.getElementById("search-term").value != last_search_term) {
+		last_search_term = document.getElementById("search-term").value;
+		findNearbyItems(current_position.latitude, current_position.longitude, document.getElementById("sorting-selector").value, last_search_term);
+	};
+};
+
 var browse_items_json = "";
 
-function findNearbyItems(lat, lon) {
+// Sorting can either be:
+// 		price_increasing or price_decreasing 
+function findNearbyItems(lat, lon, sorting, search_term) {
+	var request_url = "../api/api.php?action=items&lat="+lat+"&lon="+lon;
+
+	if (sorting != null) {
+		request_url = request_url + "&sorting="+sorting;
+	};
+
+	if (search_term != null) {
+		request_url = request_url + "&search_term="+search_term;	
+	};
+
 	var api_request = new XMLHttpRequest();
-	api_request.open("GET", "../api/api.php?action=items&lat="+lat+"&lon="+lon, true);
+	api_request.open("GET", request_url, true);
 	api_request.send();
 
 	api_request.onreadystatechange = function() {

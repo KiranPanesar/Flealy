@@ -3,18 +3,31 @@
 // This function is used to return data for the main /browse page
 // as well as the individual user pages.
 // So only pass the user_id if you're loaded data for the user pages.
-function get_items($lat, $lon, $range, $user_id) {
+function get_items($lat, $lon, $range, $sorting, $search_term, $user_id) {
 	// get the items
 	session_start();
 	$sql_query = "";
+
 	if (isset($user_id)) {
-		$sql_query = "SELECT * from items WHERE user_id='$user_id'";
+		$sql_query = "SELECT * FROM items WHERE user_id='$user_id'";
 	} else {
 		// Need to implement Haversine formula to pick nearby items (http://en.wikipedia.org/wiki/Haversine_formula)
 		// kill me kill me kill me kill m
-		$sql_query = "SELECT * from items";
+		$sql_query = "SELECT * FROM items";
 	}
 	
+	if (isset($sorting)) {
+		if ($sorting == "price_increasing") {
+			$sql_query = $sql_query . " ORDER BY price ASC";
+		} else if ($sorting == "price_decreasing") {
+			$sql_query = $sql_query . " ORDER BY price DESC";
+		}
+	}
+
+	if (isset($search_term)) {
+		$sql_query = $sql_query . " WHERE name LIKE '%".$search_term."%' OR description LIKE '%".$search_term."%'";
+	}
+
 	if ($result = db_connection()->query($sql_query)) {
 		$results_array = array();
 

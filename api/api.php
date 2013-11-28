@@ -13,7 +13,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
 			switch ($_GET['action']) {
 				case 'items':
-					echo get_items($_GET['lat'], $_GET['lon'], $_GET['range'], $_GET['user']);
+					echo get_items($_GET['lat'], $_GET['lon'], $_GET['range'], $_GET['sorting'], $_GET['search_term'], $_GET['user']);
 					break;
 				case 'item':
 					# code...

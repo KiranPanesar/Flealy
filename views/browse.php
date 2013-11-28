@@ -37,7 +37,14 @@
     	<div id="browser">
 	    	<form id="search-form">
 	    		<h2 id="search-header">Search</h2>
-				<center><input type="text" name="search-term" id="search-term" class="text-input" placeholder="I'm looking for..."/></center>
+				<center>
+					<input type="text" name="search-term" id="search-term" class="text-input" onkeyup="searchTermChanged()" placeholder="I'm looking for..."/><br/>
+					<select id="sorting-selector" class="select">
+						<option value="none">Sort items</option>
+						<option value="price_increasing">Price Ascending</option>
+						<option value="price_decreasing">Price Descending</option>
+					</select>
+				</center>
 	    	</form>
 	    	<center>
 	    	<table id="items-table">
