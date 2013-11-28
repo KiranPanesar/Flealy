@@ -13,7 +13,27 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
 			switch ($_GET['action']) {
 				case 'items':
-					echo get_items($_GET['lat'], $_GET['lon'], $_GET['range'], $_GET['sorting'], $_GET['search_term'], $_GET['user']);
+					$range = null; 
+					if (isset($_GET['range'])) {
+						$range = $_GET['range'];
+					}
+
+					$sorting = null;
+					if (isset($_GET['sorting'])) {
+						$sorting = $_GET['sorting'];
+					}
+
+					$search_term = null;
+					if (isset($_GET['search_term'])) {
+						$search_term = $_GET['search_term'];
+					}
+
+					$user = null;
+					if (isset($_GET['user'])) {
+						$user = $_GET['user'];
+					}
+
+					echo get_items($_GET['lat'], $_GET['lon'], $range, $sorting, $search_term, $user);
 					break;
 				case 'item':
 					# code...
@@ -114,7 +134,7 @@ function escape_arguments($arguments) {
 }
 
 function db_connection() {
-	$connection = new mysqli('localhost', 'root', 'root', 'flealy');
+	$connection = new mysqli('ephesus.cs.cf.ac.uk', 'c1212877', 'berlin', 'c1212877');
 
 	return $connection;
 }
