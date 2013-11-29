@@ -2,7 +2,7 @@
 
 function get_user($user_id) {
 	if (!isset($user_id)) {
-		session_start();
+		start_session();
 		$user_id = $_SESSION['user'];
 	}
 	

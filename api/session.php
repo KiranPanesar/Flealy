@@ -14,7 +14,7 @@ function sign_in($username, $password) {
 	
 	// If the login was successful, save
 	while($row = $result->fetch_assoc()){
-		session_start();
+		start_session();
 		$_SESSION['user'] = $row['user_id'];
 
 		unset($row['password']);

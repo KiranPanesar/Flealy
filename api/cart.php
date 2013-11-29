@@ -2,7 +2,7 @@
 
 // Gets the carted items for the current user
 function get_cart() {
-	session_start();
+	start_session();
 	if (isset($_SESSION['user'])) {
 		$user_id = $_SESSION['user'];
 
@@ -26,7 +26,7 @@ function get_cart() {
 }
 
 function checkout_cart($card_id, $transaction_id) {
-	session_start();
+	start_session();
 	if (isset($_SESSION['user'])) {
 		$user_id = $_SESSION['user'];
 
@@ -57,7 +57,7 @@ function checkout_cart($card_id, $transaction_id) {
 }
 
 function add_item_to_cart($item_id) {
-	session_start();
+	start_session();
 
 	if (isset($_SESSION['user'])) {
 		$user_id = $_SESSION['user'];
@@ -72,7 +72,7 @@ function add_item_to_cart($item_id) {
 }
 
 function clear_basket() {
-	session_start();
+	start_session();
 
 	if (isset($_SESSION['user'])) {
 		$user_id = $_SESSION['user'];
@@ -88,7 +88,7 @@ function clear_basket() {
 }
 
 function remove_item_from_cart($item_id) {
-	session_start();
+	start_session();
 
 	if (isset($_SESSION['user'])) {
 		$user_id = $_SESSION['user'];
