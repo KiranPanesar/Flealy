@@ -16,6 +16,10 @@ function get_items($lat, $lon, $range, $sorting, $search_term, $user_id) {
 		$sql_query = "SELECT * FROM items";
 	}
 	
+	if (isset($search_term)) {
+		$sql_query = $sql_query . " WHERE name LIKE '%".$search_term."%' OR description LIKE '%".$search_term."%'";
+	}
+
 	if (isset($sorting)) {
 		if ($sorting == "price_increasing") {
 			$sql_query = $sql_query . " ORDER BY price ASC";
@@ -23,11 +27,7 @@ function get_items($lat, $lon, $range, $sorting, $search_term, $user_id) {
 			$sql_query = $sql_query . " ORDER BY price DESC";
 		}
 	}
-
-	if (isset($search_term)) {
-		$sql_query = $sql_query . " WHERE name LIKE '%".$search_term."%' OR description LIKE '%".$search_term."%'";
-	}
-
+	
 	if ($result = db_connection()->query($sql_query)) {
 		$results_array = array();
 
