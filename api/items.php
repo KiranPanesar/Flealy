@@ -55,8 +55,14 @@ function create_item($name, $description, $price, $image_data, $latitude, $longi
 	if (isset($_SESSION['user'])) {
 		$user_id = $_SESSION['user'];
 
-		$file_name = sha1($name.uniqid("img_")).".png"; // Create a unique file name for image
-		file_put_contents(dirname(__FILE__) . "/media/".$file_name, $image_data);
+
+		$filtered_data = substr($image_data, strpos($image_data, ",")+1);
+		$filtered_data = str_replace(" ", "+", $filtered_data);
+
+		$file_name = sha1($name.uniqid("img_")).".png";
+
+		$img = imagecreatefromstring(base64_decode($filtered_data));
+		imagepng($img, './media/'.$file_name);
 
 		// FOR PRODUCTION
 		// $image_url = "https://project.cs.cf.ac.uk/K.Panesar/lab2/Flealy/api/media/".$file_name;
@@ -65,12 +71,9 @@ function create_item($name, $description, $price, $image_data, $latitude, $longi
 		$image_url = "http://localhost:8888/api/media/".$file_name;
 
 		$insert_query = "INSERT INTO items (name, description, price, image_url, latitude, longitude, user_id) VALUES ('$name', '$description', '$price', '$image_url', '$latitude', '$longitude', '$user_id')";
-		echo $insert_query;
 
 		if ($result = db_connection()->query($insert_query)) {
-			while ($row = $result->fetch_assoc()) {
-				return get_items(0.0, 0.0, 0.0, 0, $_SESSION['user']);
-			}
+			return get_items(0.0, 0.0, 0.0, 0, $_SESSION['user']);
 		}
 	} else {
 		return json_encode(array('error' => array('code'=>'400', 'message'=>'Not signed in')));

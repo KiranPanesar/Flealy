@@ -1,5 +1,6 @@
 var list_item_location = null;
 var list_item_callback_function = null;
+var item_image_base64 = null;
 
 function setListItemSuccessCallback(callback) {
 	list_item_callback_function = callback;
@@ -106,8 +107,11 @@ function drawListItemForm() {
 	document.getElementById('list-item-upload-button').onchange = function() {
 		var reader = new FileReader();
 		reader.onload = function(e) {
+
+			item_image_base64 = e.target.result;
+
 			document.getElementById("add-image-paragraph").parentNode.removeChild(document.getElementById("add-image-paragraph"));
-			document.getElementById("upload-image-div").style.backgroundImage = "url("+ e.target.result +")";
+			document.getElementById("upload-image-div").style.backgroundImage = "url("+e.target.result+")";
 
 		}
 
@@ -120,17 +124,14 @@ function submit_form() {
 	var item_description = document.getElementById("list-item-description").value;
 	var item_price 		 = document.getElementById("list-item-price").value;
 
-	var fileInput = document.getElementById('list-item-upload-button');
-	var file = fileInput.files[0];
-
-	if (validate_forms(item_name, item_description, String(item_price), list_item_location, file)) {
+	if (validate_forms(item_name, item_description, String(item_price), list_item_location, item_image_base64)) {
 		var lat 		     = list_item_location.lat();
 		var lon 		     = list_item_location.lng();
 
 		var file_submission = new XMLHttpRequest();
 		file_submission.open('POST', '../api/api.php?action=item&name='+item_name+"&description="+item_description+"&price="+item_price+"&lat="+lat+"&lon="+lon, true);
 		file_submission.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-		file_submission.send(file);
+		file_submission.send("action=item&name="+item_name+"&description="+item_description+"&price="+item_price+"&lat="+lat+"&lon="+lon+"&image_data="+item_image_base64);
 
 		file_submission.onreadystatechange = function() {
 			if (file_submission.readyState == 4) {
@@ -141,7 +142,6 @@ function submit_form() {
 					if (list_item_callback_function != null) {
 						list_item_callback_function();
 					};
-					console.log(file_submission.responseText);
 				};
 			};
 		};
