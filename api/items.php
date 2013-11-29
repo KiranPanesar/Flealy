@@ -5,7 +5,7 @@
 // So only pass the user_id if you're loaded data for the user pages.
 function get_items($lat, $lon, $range, $sorting, $search_term, $user_id) {
 	// get the items
-	session_start();
+	start_session();
 	$sql_query = "";
 
 	if (isset($user_id)) {
@@ -40,7 +40,7 @@ function get_items($lat, $lon, $range, $sorting, $search_term, $user_id) {
 }
 
 function get_item($item_id) {
-	session_start();
+	start_session();
 	$select_query = "SELECT * FROM items WHERE item_id='$item_id'";
 	$result = db_connection() -> query($select_query);
 
@@ -51,16 +51,21 @@ function get_item($item_id) {
 
 function create_item($name, $description, $price, $image_data, $latitude, $longitude) {
 
-	session_start();
+	start_session();
 	if (isset($_SESSION['user'])) {
 		$user_id = $_SESSION['user'];
 
 		$file_name = sha1($name.uniqid("img_")).".png"; // Create a unique file name for image
 		file_put_contents(dirname(__FILE__) . "/media/".$file_name, $image_data);
 
+		// FOR PRODUCTION
+		// $image_url = "https://project.cs.cf.ac.uk/K.Panesar/lab2/Flealy/api/media/".$file_name;
+
+		// FOR SANDBOX
 		$image_url = "http://localhost:8888/api/media/".$file_name;
 
 		$insert_query = "INSERT INTO items (name, description, price, image_url, latitude, longitude, user_id) VALUES ('$name', '$description', '$price', '$image_url', '$latitude', '$longitude', '$user_id')";
+		echo $insert_query;
 
 		if ($result = db_connection()->query($insert_query)) {
 			while ($row = $result->fetch_assoc()) {
@@ -73,7 +78,7 @@ function create_item($name, $description, $price, $image_data, $latitude, $longi
 }
 
 function purchase_item($item_id, $card_id, $transaction_id) {
-	session_start();
+	start_session();
 	$purchase_time = time();
 
 	if (isset($_SESSION['user'])) {
@@ -88,7 +93,7 @@ function purchase_item($item_id, $card_id, $transaction_id) {
 }
 
 function get_purchase_history() {
-	session_start();
+	start_session();
 	if (isset($_SESSION['user'])) {
 		$user_id = $_SESSION['user'];
 		$select_query = "SELECT items.item_id, items.name, items.image_url, items.price, purchases.purchase_epoch FROM purchases INNER JOIN items on items.item_id = purchases.item_id AND purchases.buyer_id = '$user_id'";
@@ -106,7 +111,7 @@ function get_purchase_history() {
 }
 
 function delete_item($item_id) {
-	session_start();
+	start_session();
 
 	if (isset($_SESSION['user'])) {
 		$user_id = $_SESSION['user'];
