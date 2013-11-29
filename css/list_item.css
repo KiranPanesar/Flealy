@@ -27,6 +27,10 @@
 	margin-left: 20px;
 	margin-top: -90px;
 
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+
 	overflow: hidden;
 	position: relative;
 
@@ -45,11 +49,6 @@
 	position: absolute;
 	top: 0;
 	left: 0;
-}
-
-#upload-image-view {
-	height:100%;
-	display: inline;
 }
 
 #list-item-name {
