@@ -32,8 +32,14 @@ switch ($_SERVER['REQUEST_METHOD']) {
 					if (isset($_GET['user'])) {
 						$user = $_GET['user'];
 					}
+					$lat = null;
+					$lon = null;
+					if (isset($_GET['lat']) && isset($_GET['lon'])) {
+						$lat = $_GET['lat'];
+						$lon = $_GET['lon'];
+					}
 
-					echo get_items($_GET['lat'], $_GET['lon'], $range, $sorting, $search_term, $user);
+					echo get_items($lat, $lon, $range, $sorting, $search_term, $user);
 					break;
 				case 'item':
 					# code...
@@ -117,6 +123,13 @@ switch ($_SERVER['REQUEST_METHOD']) {
 	default:
 		# code...
 		break;
+}
+
+// Checks the session status 
+function start_session() {
+	if (session_status() == PHP_SESSION_NONE) {
+	    session_start();
+	}
 }
 
 function escape_arguments($arguments) {
