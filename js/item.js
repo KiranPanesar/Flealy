@@ -1,8 +1,21 @@
+var view_item_delete_callback = null;
+
 function showItemDialog(item) {
 	showOverlayDialog();
 	drawMapView(item.latitude, item.longitude);
 	drawItemInfoView(item);
 };
+
+function hideItemDialog() {
+	hideOverlayDialog();
+	if (view_item_delete_callback != null) {
+		view_item_delete_callback();
+	};
+};
+
+function setItemOverlayDeleteCallback(callback) {
+	view_item_delete_callback = callback;
+}
 
 function buyItem(item_id) {
 	var api_request = new XMLHttpRequest();
@@ -138,7 +151,7 @@ function itemDeleted() {
 	var goShoppingButton = document.createElement("a");
 	goShoppingButton.setAttribute("class", "btn btn-info");
 	goShoppingButton.setAttribute("id", "delete-dismiss-button");
-	goShoppingButton.setAttribute("onclick", "hideOverlayDialog()");
+	goShoppingButton.setAttribute("onclick", "hideItemDialog()");
 	goShoppingButton.setAttribute("href", "#");
 
 	goShoppingButton.innerHTML = "Done";

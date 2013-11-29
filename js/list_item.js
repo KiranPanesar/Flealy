@@ -1,4 +1,9 @@
 var list_item_location = null;
+var list_item_callback_function = null;
+
+function setListItemSuccessCallback(callback) {
+	list_item_callback_function = callback;
+};
 
 function showListItemDialog() {
 	showOverlayDialog();
@@ -7,6 +12,10 @@ function showListItemDialog() {
 		drawListItemForm();
 	});
 };
+
+function hideListItemDialog() {
+	hideOverlayDialog();
+}
 
 function drawListItemMapView(lat, lon) {
 	var map_view = document.createElement("div");
@@ -46,9 +55,6 @@ function drawListItemForm() {
 	upload_image_div.setAttribute("id", "upload-image-div")
 	upload_image_div.innerHTML = "<p id='add-image-paragraph'>Click to add an image</p>"
 
-	var upload_image_view = document.createElement("img");
-	upload_image_view.setAttribute("id", "upload-image-view");
-
 	var list_item_name = document.createElement("input");
 	list_item_name.setAttribute("type", "text");
 	list_item_name.setAttribute("name", "item_name");
@@ -86,7 +92,6 @@ function drawListItemForm() {
 	list_item_form.appendChild(list_item_name);
 	list_item_form.appendChild(list_item_price);
 	list_item_form.appendChild(list_item_description);
-	upload_image_div.appendChild(upload_image_view);
 	upload_image_div.appendChild(list_item_upload_button);
 	list_item_form.appendChild(list_item_submit_button);
 
@@ -102,7 +107,8 @@ function drawListItemForm() {
 		var reader = new FileReader();
 		reader.onload = function(e) {
 			document.getElementById("add-image-paragraph").parentNode.removeChild(document.getElementById("add-image-paragraph"));
-			document.getElementById("upload-image-view").setAttribute("src", e.target.result);
+			document.getElementById("upload-image-div").style.backgroundImage = "url("+ e.target.result +")";
+
 		}
 
 		reader.readAsDataURL(document.getElementById('list-item-upload-button').files[0]);
@@ -132,6 +138,9 @@ function submit_form() {
 					handleError(file_submission.responseText);
 					return;
 				} else {
+					if (list_item_callback_function != null) {
+						list_item_callback_function();
+					};
 					console.log(file_submission.responseText);
 				};
 			};
