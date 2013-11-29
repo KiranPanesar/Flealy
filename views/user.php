@@ -10,6 +10,7 @@
 	
 	<link rel="stylesheet" type="text/css" href="../css/overlay_dialog.css"/>
 	<link rel="stylesheet" type="text/css" href="../css/cart.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/list_item.css"/>
 
 	<script type="text/javascript" src="../js/overlay_dialog.js"></script>
 	<script type="text/javascript" src="../js/cart.js"></script>
