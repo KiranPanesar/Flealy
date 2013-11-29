@@ -14,16 +14,13 @@ function drawNavBar() {
 	document.writeln("<div class='nav-bar'>");
 	document.writeln("<a href='../views/browse.php'><img id='nav-bar-logo' src='../img/nav-logo.png'/></a>");
 	document.writeln("<ul id='left-items'>");
-	// document.writeln("<li> <a href='../views/browse.php'>HOME</a>");
-	// document.writeln("<li> <a href='#'>PROFILE</a>");
 	document.writeln("</ul>");
 	
 	document.writeln("<ul id='right-items'>");
 	if (getUserData()) {
 		document.writeln("<li> <a href='../views/user.php'>" + getUserData().username + "</a></li>");
 		document.writeln("<li> <a href='#' class='btn btn-success' onclick='showUserCart()'>CART</a></li>");
-		document.writeln("<li> <a href='#' class='btn btn-info' onclick='showListItemDialog()'>LIST ITEM</a></li>");
-		// document.writeln("<li> <a href='#' onclick='signOut()'>SIGN OUT</a>");
+		document.writeln("<li> <a href='#' class='btn btn-info' id='show-list-item-nav-button' onclick='showListItemDialog()'>LIST ITEM</a></li>");
 	} else {
 		document.writeln("<li> <a href='../views/login.php'>SIGN IN</a></li>");
 	};
@@ -56,8 +53,8 @@ function getUserData() {
 		if (end_index == -1) {
 			end_index = cookie.length;
 		};
-
-		return JSON.parse(JSON.parse(cookie.substring(start_index, end_index)));
+		
+		return JSON.parse(cookie.substring(start_index, end_index));
 	};
 };
 
