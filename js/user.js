@@ -42,9 +42,7 @@ function loadUserInfo(user_id) {
 			if (api_request.status != 200) {
 				handleError(api_request.responseText);
 				return;
-			} else {
-				console.log(api_request.responseText);
-				
+			} else {				
 				if (getUserData()['user_id'] == JSON.parse(api_request.responseText)['user_id']) {
 					saveUserData(api_request.responseText);
 				};
@@ -67,7 +65,6 @@ function loadItems(user_id) {
                         handleError(api_request.responseText);
                         return;
 	                } else {
-	                	console.log(api_request.responseText);
                         parseItemsJSON(api_request.responseText);
 	                };
 	        };

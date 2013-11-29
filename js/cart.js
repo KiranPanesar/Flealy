@@ -97,7 +97,6 @@ function removeItemFromCart(item_id) {
 					} else {
 						cart_items_json = JSON.parse(api_request.responseText);
 						removeElementFromDocument("cart-item-id-" + item_id);
-						console.log(cart_items_json);
 
 						if (JSON.parse(cart_items_json.items).length > 0) {
 							document.getElementById("basket-total-label").innerHTML = "Total &pound;"+cart_items_json.summary.total_price;

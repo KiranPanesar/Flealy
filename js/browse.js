@@ -13,9 +13,7 @@ window.onload = function() {
 	}, false);
 };
 
-function searchTermChanged() {
-	console.log(document.getElementById("search-term").value);
-	
+function searchTermChanged() {	
 	if (document.getElementById("search-term").value != last_search_term) {
 		last_search_term = document.getElementById("search-term").value;
 		findNearbyItems(current_position.latitude, current_position.longitude, document.getElementById("sorting-selector").value, last_search_term);
