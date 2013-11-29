@@ -1,5 +1,5 @@
 var items_json = "";
-
+var current_user_id = "";
 window.onload = function() {
 	document.getElementById("user-info").style.left = 0;
 
@@ -20,9 +20,17 @@ window.onload = function() {
 		};
 		user_id = window.location.href.substring(start_index, end_index);
 	};
-
+	current_user_id = user_id;
 	loadUserInfo(user_id);
 };
+
+document.getElementById("show-list-item-nav-button").addEventListener('click', function() {
+	setListItemSuccessCallback(function() {
+		loadItems(current_user_id);
+		hideListItemDialog();
+	});
+}, false);
+
 
 function loadUserInfo(user_id) {
 	var api_request = new XMLHttpRequest();
@@ -35,6 +43,8 @@ function loadUserInfo(user_id) {
 				handleError(api_request.responseText);
 				return;
 			} else {
+				console.log(api_request.responseText);
+				
 				if (getUserData()['user_id'] == JSON.parse(api_request.responseText)['user_id']) {
 					saveUserData(api_request.responseText);
 				};
@@ -57,6 +67,7 @@ function loadItems(user_id) {
                         handleError(api_request.responseText);
                         return;
 	                } else {
+	                	console.log(api_request.responseText);
                         parseItemsJSON(api_request.responseText);
 	                };
 	        };
@@ -119,6 +130,9 @@ function showItem(id) {
 		var item = JSON.parse(items_json[i]);
 		if (item.item_id == id) {
 			showItemDialog(item);
+			setItemOverlayDeleteCallback(function() {
+				loadItems(current_user_id);
+			});
 			break;
 		};
 	};
