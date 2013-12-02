@@ -39,13 +39,13 @@
 	<div id="container">
 		<div id="user-info">
 			<img id="user-picture"></img>
-			<h2 id="user-name">Kiran Panesar<br/><small>kiranp</small></h2>
-			<h3 id="user-description">My shop is dedicated to selling high-quality, hand-made soaps. Need a special order? Just let me know and I'll be happy to help!</h3>
+			<h2 id="user-name"></h2>
+			<h3 id="user-description"></h3>
 			<hr/>
-			<h3 id="location-label">Cardiff, Wales</h3>
-			<h3 id="sales-label">116 sales</h3><br/>
+			<h3 id="location-label"></h3>
+			<h3 id="sales-label"></h3><br/>
 
-			<center><a class="btn btn-submit" id="edit-button" href="#">Edit Profile</a></center>
+			<!-- <center><a class="btn btn-submit" id="edit-button" href="#">Edit Profile</a></center> -->
 		</div>
     	<div id="browser">
     		<h2 id="items-title">My Store</h2>
