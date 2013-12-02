@@ -19,8 +19,9 @@ function drawNavBar() {
 	document.writeln("<ul id='right-items'>");
 	if (getUserData()) {
 		document.writeln("<li> <a href='../views/user.php'>" + getUserData().username + "</a></li>");
-		document.writeln("<li> <a href='#' class='btn btn-success' onclick='showUserCart()'>CART</a></li>");
-		document.writeln("<li> <a href='#' class='btn btn-info' id='show-list-item-nav-button' onclick='showListItemDialog()'>LIST ITEM</a></li>");
+		document.writeln("<li> <a href='#' class='btn btn-info' onclick='showUserCart()'>CART</a></li>");
+		document.writeln("<li> <a href='#' class='btn btn-info' id='show-list-item-nav-button' onclick='showUserPurchaseHistory()'>PURCHASES</a></li>");
+		document.writeln("<li> <a href='#' class='btn btn-success' id='show-list-item-nav-button' onclick='showListItemDialog()'>LIST ITEM</a></li>");
 	} else {
 		document.writeln("<li> <a href='../views/login.php'>SIGN IN</a></li>");
 	};
