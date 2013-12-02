@@ -10,10 +10,12 @@
 	<link rel="stylesheet" type="text/css" href="../css/overlay_dialog.css"/>
 	<link rel="stylesheet" type="text/css" href="../css/cart.css"/>
 	<link rel="stylesheet" type="text/css" href="../css/list_item.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/purchase_history.css"/>
 
 	<script type="text/javascript" src="../js/overlay_dialog.js"></script>
 	<script type="text/javascript" src="../js/cart.js"></script>
 	<script type="text/javascript" src="../js/list_item.js"></script>
+	<script type="text/javascript" src="../js/purchase_history.js"></script>
 
 	<link rel="stylesheet" type="text/css" href="../css/item.css"/>
 	<script type="text/javascript" src="../js/item.js"></script>
@@ -41,6 +43,7 @@
 					<input type="text" name="search-term" id="search-term" class="text-input" onkeyup="searchTermChanged()" placeholder="I'm looking for..."/><br/>
 					<select id="sorting-selector" class="select">
 						<option value="none">Sort items</option>
+						<option value="rating">Rating</option>
 						<option value="price_increasing">Price Ascending</option>
 						<option value="price_decreasing">Price Descending</option>
 					</select>
