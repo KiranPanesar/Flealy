@@ -14,6 +14,7 @@ function drawNavBar() {
 	document.writeln("<div class='nav-bar'>");
 	document.writeln("<a href='../views/browse.php'><img id='nav-bar-logo' src='../img/nav-logo.png'/></a>");
 	document.writeln("<ul id='left-items'>");
+	document.writeln("<li> <a href='../views/browse.php'>HOME</a></li>");
 	document.writeln("</ul>");
 	
 	document.writeln("<ul id='right-items'>");
