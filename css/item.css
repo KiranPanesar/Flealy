@@ -73,6 +73,9 @@
 }
 
 #item-detail-name {
+	font-size: 14pt;
+	overflow: none;
+	height: fixed;
 	display: inline;
 	color: black;
 	position: relative;

@@ -97,7 +97,7 @@ function parseItemsJSON(items) {
 		htmlString += "</tr>";
 
 	} else {
-		htmlString = "<h2 id='no-items-title'>You're not selling any items :(</h2><br/><center><a class='btn-submit' id='list-button' href='#'>List something!</a></center>"
+		htmlString = "<h2 id='no-items-title'>You're not selling any items :(</h2><br/><center><a class='btn btn-submit' id='list-button' href='#'>List something!</a></center>"
 	};
 
 	document.getElementById('items-table').innerHTML = htmlString; 
