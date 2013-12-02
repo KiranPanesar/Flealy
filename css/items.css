@@ -45,3 +45,13 @@
 	display: inline;
 	text-decoration: none;
 }
+
+.item-rating {
+	font-size: 10pt;
+	margin-top: 0px;
+	padding-left: 5px;
+	padding-right: 5px;
+	display: inline;
+	text-decoration: none;
+	float: right;
+}

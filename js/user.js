@@ -90,7 +90,7 @@ function parseItemsJSON(items) {
 			};
 
 			htmlString += "<td>";
-			htmlString += itemHTML(item['name'], item['image_url'], item['price'], item['item_id']);
+			htmlString += itemHTML(item['name'], item['image_url'], item['price'], item['average_rating'], item['item_id']);
 			htmlString += "</td>"
 		};
 
@@ -135,7 +135,7 @@ function showItem(id) {
 	};
 }
 
-function itemHTML(name, image_url, price, id) {
+function itemHTML(name, image_url, price, rating, id) {
 	var onclickArgument = "showItem("+id+")"
-	return "<div class='item-table-summary' id='" + id + "' onclick='"+onclickArgument+"';> <a href='#'> <img class='item-image' src='"+image_url+"'/><p class='item-name'>" + name + "</p> <p class='item-price'>&pound;" + price + "</p> </a> </div>";
+	return "<div class='item-table-summary' id='" + id + "' onclick='"+onclickArgument+"';> <a href='#'> <img class='item-image' src='"+image_url+"'/><p class='item-name'>" + name + "</p> <p class='item-price'>&pound;" + price + "</p> <p class='item-rating'>" + rating + "%</p> </a> </div>";
 };
