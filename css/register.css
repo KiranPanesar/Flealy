@@ -8,7 +8,7 @@
 
 #signup-message {
 	text-align: center;
-	margin-top:10%;
+	margin-top:7%;
 }
 
 #signup-div {
@@ -18,4 +18,52 @@
 #signup-message a {
 	color: #F0DE97;
 	text-decoration: none;
+}
+
+#register-upload-file-paragraph {
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 40%;
+	width: 85%;
+	color:white;
+	text-align: center;
+}
+
+#register-description-text-area {
+	width: 200px;
+	height: 120px;
+}
+
+#register-upload-file-div {
+	background-color: #3498db;
+	height:150px;
+	width: 150px;
+	border-radius: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: -40px;
+	margin-bottom: 20px;
+
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+
+	overflow: hidden;
+	position: relative;
+
+	box-shadow: -1px -1px 5px rgba(52, 73, 94,0.5);
+
+	border-style:solid;
+	border-color: #D3D9DE;
+	border-width:5px;
+}
+
+#register-file-upload-button {
+	height:150px;
+	width: 150px;
+	opacity: 0;
+	display: inline;
+	position: absolute;
+	top: 0;
+	left: 0;
 }
