@@ -21,7 +21,7 @@
 	text-decoration: none;
 }
 
-.item-table-summary img {
+.item-image {
 	width: 200px;
 	height:200px;
 }
@@ -39,7 +39,6 @@
 }
 .item-price {
 	font-size: 10pt;
-	margin-top: 100px;
 	padding-left: 5px;
 	padding-right: 5px;
 	display: inline;
@@ -48,10 +47,23 @@
 
 .item-rating {
 	font-size: 10pt;
-	margin-top: 0px;
+	margin-top: 1px;
 	padding-left: 5px;
 	padding-right: 5px;
 	display: inline;
 	text-decoration: none;
 	float: right;
+}
+
+.item-rating-image {
+	width: 13px;
+	height: 13px;
+	margin-top: 2px;
+/*	padding-left: 5px;
+	padding-right: 5px;
+*/	display: inline;
+	float: right;
+	background-image: url("../img/thumbs_up.png");
+	background-size: 13px 13px;
+	background-repeat: no-repeat;
 }

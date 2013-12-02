@@ -99,7 +99,7 @@ function parseItemsJSON(items) {
 
 function itemHTML(name, image_url, price, rating, id) {
 	var onclickArgument = "showItem("+id+")"
-	return "<div class='item-table-summary' id='" + id + "' onclick='"+onclickArgument+"';> <a href='#'> <img class='item-image' src='"+image_url+"'/><p class='item-name'>" + name + "</p> <p class='item-price'>&pound;" + price + "</p> <p class='item-rating'>" + rating + "%</p> </a> </div>";
+	return "<div class='item-table-summary' id='" + id + "' onclick='"+onclickArgument+"';> <a href='#'> <img class='item-image' src='"+image_url+"'/><p class='item-name'>" + name + "</p> <p class='item-price'>&pound;" + price + "</p> <p class='item-rating'>" + rating + "%</p> <div class='item-rating-image'></div> </a> </div>";
 };
 
 function showItem(id) {
