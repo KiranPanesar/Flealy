@@ -19,16 +19,26 @@ function get_user($user_id) {
 	}
 }
 
-function create_user($username, $email, $password, $image_url) {
+function create_user($email, $username, $password, $location, $description, $image_data) {
 	// Create a password hash to store using username, password and salt 
 	// (I know, I shouldn't be using SHA1 and a fixed salt. I'm sure all 0 users will complain).
 	$password_hash = login_hash($username, $password);
 
+	$filtered_data = substr($image_data, strpos($image_data, ",")+1);
+	$filtered_data = str_replace(" ", "+", $filtered_data);
+
+	$file_name = sha1($username.uniqid("img_")).".png";
+
+	$img = imagecreatefromstring(base64_decode($filtered_data));
+	imagepng($img, './media/'.$file_name);
+
+	$image_url = image_path($file_name);
+	
 	// Create query to insert the data
-	$insert_query = "INSERT INTO users (username, email, password, image_url) VALUES ('$username', '$email', '$password_hash', '$image_url')";
+	$insert_query = "INSERT INTO users (email, username,  password, location, description, image_url) VALUES ('$email', '$username', '$password_hash', '$location', '$description', '$image_url')";
 
 	if (db_connection()->query($insert_query)) {
-		$select_query = "SELECT user_id FROM users WHERE password = '$password_hash'";
+		$select_query = "SELECT * FROM users WHERE password = '$password_hash'";
 		$result = db_connection()->query($select_query);
 		
 		while ($row = $result->fetch_assoc()) {
