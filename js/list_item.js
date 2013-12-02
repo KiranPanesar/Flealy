@@ -176,7 +176,3 @@ function validate_forms(item_name, item_description, item_price, location, file)
 
 	return true;
 };
-
-
-
-
