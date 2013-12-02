@@ -16,7 +16,9 @@ document.getElementById("login-form").addEventListener('submit', function(event)
 				handleError(api_request.responseText);
 				return;
 			} else {
-				saveUserData(JSON.stringify(api_request.responseText));
+				console.log(JSON.stringify(api_request.responseText));
+				saveUserData(escape(api_request.responseText));
+
 				window.location.replace("../views/browse.php")
 			};
 		};
