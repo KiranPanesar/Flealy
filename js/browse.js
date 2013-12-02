@@ -20,6 +20,13 @@ function searchTermChanged() {
 	};
 };
 
+document.getElementById("show-list-item-nav-button").addEventListener('click', function() {
+	setListItemSuccessCallback(function() {
+		findNearbyItems(current_position.latitude, current_position.longitude, document.getElementById("sorting-selector").value);
+		hideListItemDialog();
+	});
+}, false);
+
 var browse_items_json = "";
 
 // Sorting can either be:
@@ -101,6 +108,9 @@ function showItem(id) {
 		var item = JSON.parse(browse_items_json[i]);
 		if (item.item_id == id) {
 			showItemDialog(item);
+			setItemOverlayDeleteCallback(function() {
+				findNearbyItems(current_position.latitude, current_position.longitude, document.getElementById("sorting-selector").value);
+			});
 			break;
 		};
 	};

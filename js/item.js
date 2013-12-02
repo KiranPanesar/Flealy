@@ -2,6 +2,7 @@ var view_item_delete_callback = null;
 
 function showItemDialog(item) {
 	showOverlayDialog();
+	document.getElementById("content-container").style.overflow = "hidden";
 	drawMapView(item.latitude, item.longitude);
 	drawItemInfoView(item);
 };
