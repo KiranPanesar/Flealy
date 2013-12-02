@@ -66,7 +66,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
 			switch ($_POST['action']) {
 				// Register a user
 				case 'user':
-					echo create_user($_POST['username'],  $_POST['email'], $_POST['password'], 'http://placehold.it/200/200');
+					echo create_user($_POST['email'], $_POST['username'],  $_POST['password'], $_POST['location'], $_POST['description'], $_POST['image_data']);
 					break;
 				case 'session':
 					echo sign_in($_POST['username'], $_POST['password']);
@@ -139,7 +139,11 @@ function escape_arguments($arguments) {
 }
 
 function db_connection() {
-	$connection = new mysqli('ephesus.cs.cf.ac.uk', 'c1212877', 'berlin', 'c1212877');
+	// FOR PRODUCTION
+	// $connection = new mysqli('ephesus.cs.cf.ac.uk', 'c1212877', 'berlin', 'c1212877');
+
+	// FOR SANDBOX
+	$connection = new mysqli('localhost', 'root', 'root', 'flealy');	
 
 	return $connection;
 }
@@ -147,5 +151,14 @@ function db_connection() {
 function login_hash($username, $password) {
 	return sha1($username . $password . 'vPS8CgTEwGV199pJhzgDwy4wUuBNJ6XypqtRmWkAxh6Q5wBlUd');
 }
+
+function image_path($file_name) {
+		// FOR PRODUCTION
+	// return "https://project.cs.cf.ac.uk/K.Panesar/lab2/Flealy/api/media/".$file_name;
+
+	// FOR SANDBOX
+	return "http://localhost:8888/api/media/".$file_name;
+
+};
 
 ?>

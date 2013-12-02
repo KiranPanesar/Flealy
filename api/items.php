@@ -64,11 +64,7 @@ function create_item($name, $description, $price, $image_data, $latitude, $longi
 		$img = imagecreatefromstring(base64_decode($filtered_data));
 		imagepng($img, './media/'.$file_name);
 
-		// FOR PRODUCTION
-		// $image_url = "https://project.cs.cf.ac.uk/K.Panesar/lab2/Flealy/api/media/".$file_name;
-
-		// FOR SANDBOX
-		$image_url = "http://localhost:8888/api/media/".$file_name;
+		$image_url = image_path($file_name);
 
 		$insert_query = "INSERT INTO items (name, description, price, image_url, latitude, longitude, user_id) VALUES ('$name', '$description', '$price', '$image_url', '$latitude', '$longitude', '$user_id')";
 
