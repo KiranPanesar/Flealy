@@ -1,5 +1,5 @@
 #purchases-items-table {
-
+	height:100%;
 }
 
 .purchases-table-item {
@@ -8,16 +8,19 @@
 }
 
 .purchases-table-item img {
+}
+
+.item-table-image {
+	width: 30%;
+}
+
+.item-table-image img {
 	border-radius: 100%;
 	width: 130px;
 	height: 130px;
 	border-style:solid;
 	border-color: #D3D9DE;
 	border-width:5px;
-}
-
-.item-table-image {
-	width: 30%;
 }
 
 .item-table-name {
@@ -28,13 +31,29 @@
 	width:10%;
 }
 
-.item-table-remove {
-	width: 30%;
+/*.purchase-item-table-upvote {
+
+}*/
+
+
+.purchase-item-table-upvote {
+	padding: 0;
+	width: 30px;
+}
+.purchase-item-table-downvote {
+	padding: 0;
+	width: 30px;
+}
+.purchase-item-rate-img {
+	width: 30px;
+	height:30px;
+	border-radius:0;
+	border-style: none;
 }
 
 #purchases-table-container {
 	overflow: auto;
-	height: 81%;
+	height: 90%;
 }
 
 #no-purchases-items-container {
