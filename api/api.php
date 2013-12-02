@@ -3,8 +3,10 @@ include 'user.php';
 include 'items.php';
 include 'session.php';
 include 'cart.php';
+include 'rating.php';
+include 'purchase.php';
 
-$endpoints = array('items', 'item', 'user', 'session', 'cart', 'purchase', 'purchases');
+$endpoints = array('items', 'item', 'user', 'session', 'cart', 'purchase', 'purchases', 'rating');
 
 switch ($_SERVER['REQUEST_METHOD']) {
 	case 'GET':
@@ -59,9 +61,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
 			echo json_encode(array('error' => array('code' => 404, 'message' => 'Not Found')));
 		}
 		break;
-	case 'POST':
-
-		if ((isset($_POST['action']) && in_array($_POST['action'], $endpoints)) || (isset($_GET['action']) && in_array($_GET['action'], $endpoints))) {
+	case 'POST':	
+		if ((isset($_POST['action']) && in_array($_POST['action'], $endpoints))) {
 			$_POST = escape_arguments($_POST);
 			switch ($_POST['action']) {
 				// Register a user
@@ -79,6 +80,9 @@ switch ($_SERVER['REQUEST_METHOD']) {
 					break;
 				case 'purchase':
 					echo checkout_cart($_POST['card_id'], $_POST['transaction_id']);
+					break;
+				case 'rating':
+					echo create_rating($_POST['item_id'], $_POST['rating']);
 					break;
 				default:
 					# code...
