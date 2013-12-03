@@ -1,11 +1,9 @@
-window.onload = function() {
-	if (getUserData()) {
-		// window.location.replace("../views/browse.php");
-	};
+if (getUserData()) {
+	window.location.replace("./views/browse.php");
 };
 
 function signUp() {
-	window.location.replace("../views/register.php");
+	window.location.replace("./views/register.php");
 };
 
 function validatePostcode() {
@@ -22,6 +20,6 @@ function validatePostcode() {
 document.getElementById("postcode-form").addEventListener('submit', function(event) {
 	event.preventDefault();
 	
-	window.location.replace("../views/browse.php");
+	window.location.replace("./views/browse.php");
 	
 }, false);
