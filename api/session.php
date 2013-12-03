@@ -29,6 +29,7 @@ function sign_in($username, $password) {
 
 function sign_out() {
 	session_destroy();
+	session_unset();
 
 	return json_encode(array('code' => 200, 'message' => 'Signed Out'));
 }

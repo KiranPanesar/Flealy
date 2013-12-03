@@ -30,6 +30,7 @@ function drawNavBar() {
 		document.writeln("<li> <a href='#' class='btn btn-info' onclick='showUserCart()'>CART</a></li>");
 		document.writeln("<li> <a href='#' class='btn btn-info' id='show-purchase-history-nav-button' onclick='showUserPurchaseHistory()'>PURCHASES</a></li>");
 		document.writeln("<li> <a href='#' class='btn btn-success' id='show-list-item-nav-button' onclick='showListItemDialog()'>LIST ITEM</a></li>");
+		document.writeln("<li> <a href='#' class='btn btn-cancel' id='show-list-item-nav-button' onclick='signOut()'>SIGN OUT</a></li>");
 	} else {
 		document.writeln("<li> <a href='../views/login.php'>SIGN IN</a></li>");
 		document.writeln("<li> <a href='../views/register.php'>REGISTER</a></li>");
@@ -41,7 +42,7 @@ function drawNavBar() {
 
 // Saves the current user data to a cookie
 function saveUserData(user_json) {
-	document.cookie = "user_data="+user_json+";path=/";
+	document.cookie = "user_data="+user_json+";";
 };
 
 // Retreives the cookie info
@@ -70,6 +71,8 @@ function getUserData() {
 
 // Clears the user data from the local cookie
 function clearUserData() {
+	console.log("signout");
+	console.log(document.cookie.split(";"));
 	var cookies = document.cookie.split(";");
     for (var i = 0; i < cookies.length; i++) {
     	var cookie = cookies[i];
@@ -77,12 +80,13 @@ function clearUserData() {
     	var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
     	document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
     }
+
+    console.log(document.cookie.split(";"));
 }
 
-function delete_cookie(name, path, domain) 
+function delete_cookie(name) 
 {
-   document.cookie=name+"="+((path) ? ";path="+path:"")+((domain)?";domain="+domain:"") +
-                                   ";expires=Thu, 01 Jan 1970 00:00:01 GMT";
+   document.cookie=name+"=;expires=Thu, 01 Jan 1970 00:00:01 GMT";
 }
 
 // Function to destroy the user's session
@@ -92,7 +96,7 @@ function signOut() {
 	var api_request = new XMLHttpRequest();
 	api_request.open("DELETE", "../api/api.php?action=session", true);
 	api_request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-	api_request.send("action=session");
+	api_request.send();
 
 	api_request.onreadystatechange = function() {
 		if (api_request.readyState == 4) {
@@ -100,11 +104,29 @@ function signOut() {
 				handleError(api_request.responseText);
 				return;
 			} else {
-				clearUserData();
+				delete_cookie("PHPSESSID");
+				delete_cookie("user_data");
+				window.location.replace("../");
 			};
 		};
 	};
 };
+
+function fetchGETValueForKeyFromURL(key, url) {
+	var start_index = url.indexOf(key+"=");
+	
+	if (start_index == -1) {
+		return null;
+	} else {
+		start_index = url.indexOf("=", start_index) + 1;
+		var end_index = url.indexOf("&", start_index);
+		if (end_index == -1) {
+			end_index = url.length;
+		};
+		
+		return url.substring(start_index, end_index);
+	};
+}
 
 function removeElementFromDocument(element_id) {
     var doc_element = document.getElementById(element_id);

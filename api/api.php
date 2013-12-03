@@ -152,10 +152,10 @@ function escape_arguments($arguments) {
 
 function db_connection() {
 	// FOR PRODUCTION
-	// $connection = new mysqli('ephesus.cs.cf.ac.uk', 'c1212877', 'berlin', 'c1212877');
+	$connection = new mysqli('ephesus.cs.cf.ac.uk', 'c1212877', 'WGzXH[0Sm~57doK', 'c1212877');
 
 	// FOR SANDBOX
-	$connection = new mysqli('localhost', 'root', 'root', 'flealy');	
+	// $connection = new mysqli('localhost', 'root', 'root', 'flealy');	
 	if ($connection->connect_errno) {
 		http_response_code(500);
 		die(json_encode(array('error' => array('code' => 500, 'message' => 'Could not connect to database'))));
