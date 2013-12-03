@@ -19,13 +19,16 @@ function create_rating($item_id, $rating) {
 				update_average_rating($item_id);
 				return json_encode(array('response'=>'success'));
 			} else {
-				return json_encode(array('error' => array('code'=>'500', 'message'=>'Could not rate')));	
+				http_response_code(500);
+				die(json_encode(array('error' => array('code' => 401, 'message' => 'Could not rate item'))));
 			}
 		} else {
-			return json_encode(array('error' => array('code'=>'403', 'message'=>'Already rated')));
+			http_response_code(403);
+			die(json_encode(array('error' => array('code' => 401, 'message' => 'Already rated item'))));
 		}
 	} else {
-		return json_encode(array('error' => array('code'=>'400', 'message'=>'Not signed in')));
+		http_response_code(401);
+		die(json_encode(array('error' => array('code' => 401, 'message' => 'You have to be signed in to do that'))));
 	}
 }
 

@@ -5,7 +5,7 @@ function get_user($user_id) {
 		start_session();
 		$user_id = $_SESSION['user'];
 	}
-	
+
 	if (isset($user_id)) {
 		$select_query = "SELECT user_id, username, email, image_url, location, description, sales FROM users WHERE user_id='$user_id'";
 		
@@ -15,7 +15,8 @@ function get_user($user_id) {
 			}
 		}
 	} else {
-		return json_encode(array('error' => array('code'=>'400', 'message'=>'Not signed in')));
+		http_response_code(401);
+		die(json_encode(array('error' => array('code' => 401, 'message' => 'You have to be signed in to do that'))));
 	}
 }
 
@@ -45,7 +46,8 @@ function create_user($email, $username, $password, $location, $description, $ima
 			return json_encode(array('response'=>'success'));
 		}
 
-		return json_encode(array('error' => array('code'=>'500', 'message'=>'Could not create user account')));
+		http_response_code(500);
+		die(json_encode(array('error' => array('code' => 500, 'message' => 'You have to be signed in to do that'))));
 	}
 }
 

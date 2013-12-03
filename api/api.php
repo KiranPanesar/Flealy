@@ -58,7 +58,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
 			}
 
 		} else {
-			echo json_encode(array('error' => array('code' => 404, 'message' => 'Not Found')));
+			http_response_code(404);
+			die(json_encode(array('error' => array('code' => 404, 'message' => 'API endpoint request not found'))));
 		}
 		break;
 	case 'POST':	
@@ -88,6 +89,9 @@ switch ($_SERVER['REQUEST_METHOD']) {
 					# code...
 					break;
 			}
+		} else {
+			http_response_code(404);
+			die(json_encode(array('error' => array('code' => 404, 'message' => 'API endpoint request not found'))));
 		}
 		break;
 	case 'DELETE':
@@ -114,10 +118,14 @@ switch ($_SERVER['REQUEST_METHOD']) {
 					# code...
 					break;
 			}
+		} else {
+			http_response_code(404);
+			die(json_encode(array('error' => array('code' => 404, 'message' => 'API endpoint request not found'))));
 		}
 		break;
 	default:
-		# code...
+		http_response_code(400);
+		die(json_encode(array('error' => array('code' => 400, 'message' => 'Unsupported REST method. Supported methods are GET, POST, DELETE'))));
 		break;
 }
 
@@ -148,6 +156,10 @@ function db_connection() {
 
 	// FOR SANDBOX
 	$connection = new mysqli('localhost', 'root', 'root', 'flealy');	
+	if ($connection->connect_errno) {
+		http_response_code(500);
+		die(json_encode(array('error' => array('code' => 500, 'message' => 'Could not connect to database'))));
+	}
 
 	return $connection;
 }

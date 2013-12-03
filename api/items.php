@@ -46,6 +46,11 @@ function get_item($item_id) {
 	start_session();
 	$select_query = "SELECT * FROM items WHERE item_id='$item_id'";
 	$result = db_connection() -> query($select_query);
+	
+	if (!$result) {
+		http_response_code(404);
+		die(json_encode(array('error' => array('code' => 404, 'message' => 'Item note found'))));
+	}
 
 	while ($row = $result->fetch_assoc()) {
 		return json_encode($row);
@@ -75,7 +80,8 @@ function create_item($name, $description, $price, $image_data, $latitude, $longi
 			return get_items(0.0, 0.0, 0.0, 0, $_SESSION['user']);
 		}
 	} else {
-		return json_encode(array('error' => array('code'=>'400', 'message'=>'Not signed in')));
+		http_response_code(401);
+		die(json_encode(array('error' => array('code' => 401, 'message' => 'You have to be signed in to do that'))));
 	}
 }
 
@@ -89,6 +95,9 @@ function delete_item($item_id) {
 		if ($result=db_connection()->query($delete_query)) {
 			return json_encode(array('code' => 200, 'message' => 'success'));
 		}
+	} else {
+		http_response_code(401);
+		die(json_encode(array('error' => array('code' => 401, 'message' => 'You have to be signed in to do that'))));
 	}
 }
 

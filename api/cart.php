@@ -21,7 +21,8 @@ function get_cart() {
 		}
 
 	} else {
-		return json_encode(array('error' => array('code'=>'400', 'message'=>'Not signed in')));
+		http_response_code(401);
+		die(json_encode(array('error' => array('code' => 401, 'message' => 'You have to be signed in to do that'))));
 	}
 }
 
@@ -50,7 +51,8 @@ function checkout_cart($card_id, $transaction_id) {
 			clear_basket();
 			return json_encode(array('response'=>'success'));
 		} else {
-			return json_encode(array('error' => array('code'=>'500', 'message'=>'Could not create user account')));
+			http_response_code(401);
+			die(json_encode(array('error' => array('code' => 401, 'message' => 'You have to be signed in to do that'))));
 		}
 
 	}
@@ -67,7 +69,8 @@ function add_item_to_cart($item_id) {
 			return json_encode(array('response'=>'success'));
 		}
 	} else {
-		return json_encode(array('error' => array('code' => '400', 'mesage'=>"Not signed in")));
+		http_response_code(401);
+		die(json_encode(array('error' => array('code' => 401, 'message' => 'You have to be signed in to do that'))));
 	}
 }
 
@@ -83,7 +86,8 @@ function clear_basket() {
 		}
 
 	} else {
-		return json_encode(array('error' => array('code' => '400', 'mesage'=>"Not signed in")));
+		http_response_code(401);
+		die(json_encode(array('error' => array('code' => 401, 'message' => 'You have to be signed in to do that'))));
 	}
 }
 
@@ -100,7 +104,8 @@ function remove_item_from_cart($item_id) {
 		}
 
 	} else {
-		return json_encode(array('error' => array('code' => '400', 'mesage'=>"Incorrect username/password.")));
+		http_response_code(401);
+		die(json_encode(array('error' => array('code' => 401, 'message' => 'You have to be signed in to do that'))));
 	}
 }
 

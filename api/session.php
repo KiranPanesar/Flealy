@@ -9,7 +9,8 @@ function sign_in($username, $password) {
 	$sql = "SELECT * FROM users WHERE password = '$password_hash'";
 
 	if(!$result = $db->query($sql)){
-	    die(json_encode(array('error' => array('code' => '500', 'mesage'=>$db->connect_errno))));
+		http_response_code(401);
+		die(json_encode(array('error' => array('code' => 401, 'message' => 'You have to be signed in to do that'))));
 	}
 	
 	// If the login was successful, save
@@ -22,7 +23,8 @@ function sign_in($username, $password) {
 	    return json_encode($row);
 	}
 
-    die(json_encode(array('error' => array('code' => '400', 'mesage'=>"Incorrect username/password."))));
+	http_response_code(401);
+	die(json_encode(array('error' => array('code' => 401, 'message' => 'Incorrect username or password'))));
 }
 
 function sign_out() {

@@ -12,6 +12,9 @@ function purchase_item($item_id, $card_id, $transaction_id) {
 		if ($result = db_connection()->query($insert_query)) {
 			return json_encode(array('code' => 200, 'message' => 'success'));
 		}
+	} else {
+		http_response_code(401);
+		die(json_encode(array('error' => array('code' => 401, 'message' => 'You have to be signed in to do that'))));
 	}
 }
 
@@ -30,6 +33,9 @@ function get_purchase_history() {
 
 			return json_encode($results_array);
 		}
+	} else {
+		http_response_code(401);
+		die(json_encode(array('error' => array('code' => 401, 'message' => 'You have to be signed in to do that'))));
 	}
 }
 
