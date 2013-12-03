@@ -42,10 +42,12 @@ function loadUserInfo(user_id) {
 			if (api_request.status != 200) {
 				handleError(api_request.responseText);
 				return;
-			} else {				
-				if (getUserData()['user_id'] == JSON.parse(api_request.responseText)['user_id']) {
-					saveUserData(api_request.responseText);
-				};
+			} else {
+				if (getUserData() != null) {
+					if (getUserData()['user_id'] == JSON.parse(api_request.responseText)['user_id']) {
+						saveUserData(api_request.responseText);
+					};
+				};				
 
 				parseUserData(JSON.parse(api_request.responseText));
 				loadItems(user_id);
