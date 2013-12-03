@@ -142,6 +142,7 @@ function submit_form() {
 					handleError(file_submission.responseText);
 					return;
 				} else {
+					alert("Item successfully listed!");
 					if (list_item_callback_function != null) {
 						list_item_callback_function();
 					};
