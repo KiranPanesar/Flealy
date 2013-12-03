@@ -1,6 +1,7 @@
 function showOverlayDialog() {
    	var overlay = document.createElement("div");
    	overlay.setAttribute("id","overlay-container");
+
 	document.body.appendChild(overlay);
 	
 	document.getElementById("overlay-container").addEventListener('click', function() {

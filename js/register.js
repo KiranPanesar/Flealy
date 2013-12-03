@@ -43,6 +43,9 @@ window.onload = function() {
 
 		reader.readAsDataURL(document.getElementById('register-file-upload-button').files[0]);
 	};
+
+	document.getElementById("sign-up-container").style.opacity = "1";
+	document.getElementById("sign-up-container").style.marginTop = "-10px";
 };
 
 function validate_registration_form(user_email, username, user_password, user_location, user_description, user_image_file) {

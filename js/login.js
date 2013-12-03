@@ -16,11 +16,15 @@ document.getElementById("login-form").addEventListener('submit', function(event)
 				handleError(api_request.responseText);
 				return;
 			} else {
-				console.log(JSON.stringify(api_request.responseText));
-				saveUserData(escape(api_request.responseText));
+				saveUserData(api_request.responseText);
 
 				window.location.replace("../views/browse.php")
 			};
 		};
 	}
 },  false);
+
+window.onload = function() {
+	document.getElementById("log-in-container-div").style.opacity = "1";
+	document.getElementById("log-in-container-div").style.marginTop = "-10px";
+};

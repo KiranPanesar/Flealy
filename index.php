@@ -9,7 +9,7 @@
 </head>
 
 <body>
-	<div id="container-div">
+	<div class="fade-and-slide" id="container-div">
 		<div id="welcome-message">
 			<h1>Welcome to <a href="#">Flea.ly</a></h1>
 		</div>

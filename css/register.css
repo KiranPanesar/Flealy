@@ -1,9 +1,15 @@
+#sign-up-container {
+	opacity: 0;
+	margin-top: 10px;
+}
+
 #sign-up {
 	width: 200px;
 }
 
 #go-home {
-	width: 200px;
+	padding-left: 80px;
+	padding-right: 80px;
 }
 
 #signup-message {

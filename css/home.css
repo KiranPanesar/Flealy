@@ -17,7 +17,6 @@
 }
 #start-shopping {
 	width: 200px;
-
 }
 
 #get-started {
@@ -27,8 +26,6 @@
 #container-div {
 	position: relative;
 	opacity: 0;
-	transition: opacity 0.5s, margin-top 0.5s;
-	-webkit-transition: opacity 0.5s, margin-top 0.5s; /* Safari */
 }
 
 #welcome-message {
