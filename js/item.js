@@ -1,7 +1,11 @@
 var view_item_delete_callback = null;
 
+var item_json = null;
+
 function showItemDialog(item) {
 	showOverlayDialog();
+	item_json = item;
+
 	document.getElementById("content-container").style.overflow = "hidden";
 	drawMapView(item.latitude, item.longitude);
 	drawItemInfoView(item);
@@ -19,20 +23,32 @@ function setItemOverlayDeleteCallback(callback) {
 }
 
 function buyItem(item_id) {
-	var api_request = new XMLHttpRequest();
-	api_request.open("POST", "../api/api.php", true);
-	api_request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-	api_request.send("action=cart&id=" + item_id);
 
-	api_request.onreadystatechange = function() {
-		if (api_request.readyState == 4) {
-			if (api_request.status != 200) {
-				handleError(api_request.responseText);
-				return;
-			} else {
-				document.getElementById("buy-item").innerHTML = "Boom! Added!"
-				document.getElementById("buy-item").removeAttribute("onclick");
+	if (getUserData() != null) {
+		if (getUserData().user_id != item_json.user_id) {
+			var api_request = new XMLHttpRequest();
+			api_request.open("POST", "../api/api.php", true);
+			api_request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+			api_request.send("action=cart&id=" + item_id);
+
+			api_request.onreadystatechange = function() {
+				if (api_request.readyState == 4) {
+					if (api_request.status != 200) {
+						handleError(api_request.responseText);
+						return;
+					} else {
+						document.getElementById("buy-item").innerHTML = "Boom! Added!"
+						document.getElementById("buy-item").removeAttribute("onclick");
+					};
+				};
 			};
+		} else {
+			alert("You can't buy your own item!");
+		};
+
+	} else {
+		if (confirm("You need to be logged in to do that.\n\nLog in now?")) {
+			window.location.replace("../views/login.php");
 		};
 	};
 }
@@ -132,6 +148,14 @@ function drawItemInfoView(item) {
 
 			button_container.appendChild(message_user);
 		};
+	} else {
+			var message_user = document.createElement("a");
+			message_user.setAttribute("class", "btn btn-info");
+			message_user.setAttribute("id", "view-user-profile");
+			message_user.setAttribute("href", "../views/user.php?id="+item['user_id']);
+			message_user.innerHTML = "View Seller";
+
+			button_container.appendChild(message_user);
 	};
 
 	metadata_container.appendChild(item_name);
