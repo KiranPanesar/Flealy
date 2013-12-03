@@ -42,7 +42,7 @@ function drawNavBar() {
 
 // Saves the current user data to a cookie
 function saveUserData(user_json) {
-	document.cookie = "user_data="+user_json+";";
+	document.cookie = "user_data="+escape(user_json)+";";
 };
 
 // Retreives the cookie info
@@ -126,6 +126,25 @@ function fetchGETValueForKeyFromURL(key, url) {
 		
 		return url.substring(start_index, end_index);
 	};
+}
+
+function showUserLocationOnMap(map, lat, lon) {
+	var co = new google.maps.LatLng(lat, lon);
+
+	var marker = new google.maps.Marker({
+	  position: co,
+	  map: map,
+	  icon: '../img/user_location.png',
+	  size: new google.maps.Size(20, 20)
+	});
+
+	google.maps.event.addListener(marker, 'click', function() {
+		var location_info_callout = new google.maps.InfoWindow({
+			content:"<p>Your location</p>"
+		});
+
+	  	location_info_callout.open(map, marker);
+	});
 }
 
 function removeElementFromDocument(element_id) {
