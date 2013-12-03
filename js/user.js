@@ -24,13 +24,14 @@ window.onload = function() {
 	loadUserInfo(user_id);
 };
 
-document.getElementById("show-list-item-nav-button").addEventListener('click', function() {
-	setListItemSuccessCallback(function() {
-		loadItems(current_user_id);
-		hideListItemDialog();
-	});
-}, false);
-
+if (document.getElementById("show-list-item-nav-button") != null) {
+	document.getElementById("show-list-item-nav-button").addEventListener('click', function() {
+		setListItemSuccessCallback(function() {
+			loadItems(current_user_id);
+			hideListItemDialog();
+		});
+	}, false);
+};
 
 function loadUserInfo(user_id) {
 	var api_request = new XMLHttpRequest();
