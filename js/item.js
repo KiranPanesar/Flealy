@@ -89,6 +89,12 @@ function drawMapView(lat, lon) {
 	    map: map,
 	    title: 'Hello World!'
 	});
+
+	navigator.geolocation.getCurrentPosition(function(position) {
+		showUserLocationOnMap(map, position.coords.latitude, position.coords.longitude);
+	});
+	
+
 };
 
 function drawItemInfoView(item) {

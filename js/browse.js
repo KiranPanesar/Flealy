@@ -141,6 +141,7 @@ function dropPins(position) {
 	 	zoom: 15,
 	    center: new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
 	}
+
 	var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
 	for (var i = 0; i < browse_items_json.length; i++) {
@@ -148,6 +149,9 @@ function dropPins(position) {
 
 		dropPin(map, item);
 	};
+
+	showUserLocationOnMap(map, position.coords.latitude, position.coords.longitude);
+
 };
 
 function dropPin(map, item) {

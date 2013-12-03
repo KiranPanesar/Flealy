@@ -45,6 +45,8 @@ function drawListItemMapView(lat, lon) {
 		    title: 'Hello World!'
 		});
 	});
+
+	showUserLocationOnMap(map, lat, lon);
 };
 
 function drawListItemForm() {
