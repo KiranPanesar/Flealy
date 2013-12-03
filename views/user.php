@@ -1,7 +1,6 @@
 <!DOCTYPE>
 
 <html>
-
 <head>
 	<title>Kiran Panesar</title>
 	<link rel="stylesheet" type="text/css" href="../css/style.css"/>
@@ -11,10 +10,12 @@
 	<link rel="stylesheet" type="text/css" href="../css/overlay_dialog.css"/>
 	<link rel="stylesheet" type="text/css" href="../css/cart.css"/>
 	<link rel="stylesheet" type="text/css" href="../css/list_item.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/purchase_history.css"/>
 
 	<script type="text/javascript" src="../js/overlay_dialog.js"></script>
 	<script type="text/javascript" src="../js/cart.js"></script>
 	<script type="text/javascript" src="../js/list_item.js"></script>
+	<script type="text/javascript" src="../js/purchase_history.js"></script>
 
 	<link rel="stylesheet" type="text/css" href="../css/item.css"/>
 	<script type="text/javascript" src="../js/item.js"></script>
