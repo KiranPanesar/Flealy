@@ -20,12 +20,14 @@ function searchTermChanged() {
 	};
 };
 
-document.getElementById("show-list-item-nav-button").addEventListener('click', function() {
-	setListItemSuccessCallback(function() {
-		findNearbyItems(current_position.latitude, current_position.longitude, document.getElementById("sorting-selector").value);
-		hideListItemDialog();
-	});
-}, false);
+if (document.getElementById("show-list-item-nav-button")) {
+	document.getElementById("show-list-item-nav-button").addEventListener('click', function() {
+		setListItemSuccessCallback(function() {
+			findNearbyItems(current_position.latitude, current_position.longitude, document.getElementById("sorting-selector").value);
+			hideListItemDialog();
+		});
+	}, false);
+};
 
 var browse_items_json = "";
 
