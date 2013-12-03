@@ -7,7 +7,14 @@ function goHome() {
 };
 
 function handleError(responseText) {
-	alert(JSON.parse(responseText).error.message);
+	if (JSON.parse(responseText) != null) {
+		if (JSON.parse(responseText).error != null) {
+			alert("An error occurred: \n"+JSON.parse(responseText).error.message);
+			return;
+		};
+	};
+
+	alert("An error occurred. Your request could not be processed at this time.");
 };
 
 function drawNavBar() {
