@@ -2,16 +2,33 @@
 	width: 200px;
 }
 
-#postcode-input {
+#search-term-input {
+	width: 180px;
 	font-size: 11pt;
+	background:transparent;
+	border:none;
+	padding: 0;
+	font-family: Lato;
+	font-size: 20pt;
+	color: #DAE1E6;
+	margin-left: 10px;
+	margin-right: 10px;
+	border-bottom:thin solid #ecf0f1;
 }
-
 #start-shopping {
 	width: 200px;
+
 }
 
 #get-started {
 	text-align: center;
+}
+
+#container-div {
+	position: relative;
+	opacity: 0;
+	transition: opacity 0.5s, margin-top 0.5s;
+	-webkit-transition: opacity 0.5s, margin-top 0.5s; /* Safari */
 }
 
 #welcome-message {

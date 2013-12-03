@@ -4,8 +4,14 @@ var last_search_term = "";
 window.onload = function() {
 	navigator.geolocation.getCurrentPosition(function(position) {
 		current_position = position;
-		findNearbyItems(position.coords.latitude, position.coords.longitude);
+		last_search_term = fetchGETValueForKeyFromURL("search", window.location.href);
+
+		findNearbyItems(position.coords.latitude, position.coords.longitude, null, last_search_term);
 		initializeMap(position.coords.latitude, position.coords.longitude);
+		
+		if (last_search_term != null) {
+			document.getElementById("search-term").value = unescape(last_search_term);
+		};
 	});
 	
 	document.getElementById("sorting-selector").addEventListener("change", function() {
@@ -43,6 +49,8 @@ function findNearbyItems(lat, lon, sorting, search_term) {
 	if (search_term != null) {
 		request_url = request_url + "&search_term="+search_term;	
 	};
+	
+	console.log(request_url);
 
 	var api_request = new XMLHttpRequest();
 	api_request.open("GET", request_url, true);

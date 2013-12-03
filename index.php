@@ -9,19 +9,20 @@
 </head>
 
 <body>
+	<div id="container-div">
+		<div id="welcome-message">
+			<h1>Welcome to <a href="#">Flea.ly</a></h1>
+		</div>
+		<br/>
 
-	<div id="welcome-message">
-		<h1>Welcome to <a href="#">Flea.ly</a></h1>
-		<h2>Find the best items near you.</h2>
-	</div>
-	<br/>
-
-	<div id="get-started">
-		<form id="postcode-form">
-			<input type="text" name="postcode" id="postcode-input" class="text-input" placeholder="Enter your postcode" onkeyup="validatePostcode()" /><br/><br/>
-			<input type="submit" value="Start Shopping" class="btn btn-submit" id="start-shopping" />
-		</form>
-		<input type="submit" value="Sign Up" class="btn btn-submit" id="sign-up" onclick="signUp();" />
+		<div id="get-started">
+			<form id="search-form">
+				
+				<h2>I'm looking for the best <input type="text" name="search-term" id="search-term-input" class="text-input" autofocus/> near me.</h2>
+				<input type="submit" value="Start Shopping" class="btn btn-submit" id="start-shopping" />
+			</form>
+			<input type="submit" value="Sign Up" class="btn btn-submit" id="sign-up" onclick="signUp();" />
+		</div>
 	</div>
 </body>
 
