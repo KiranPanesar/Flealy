@@ -110,7 +110,10 @@ function drawListItemForm() {
 
 			item_image_base64 = e.target.result;
 
-			document.getElementById("add-image-paragraph").parentNode.removeChild(document.getElementById("add-image-paragraph"));
+			var addImageParagraph = document.getElementById("add-image-paragraph")
+			if (addImageParagraph)
+			        addImageParagraph.parentNode.removeChild(addImageParagraph);
+
 			document.getElementById("upload-image-div").style.backgroundImage = "url("+e.target.result+")";
 
 		}
