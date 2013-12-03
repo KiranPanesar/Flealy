@@ -49,7 +49,7 @@ function get_item($item_id) {
 	
 	if (!$result) {
 		http_response_code(404);
-		die(json_encode(array('error' => array('code' => 404, 'message' => 'Item note found'))));
+		die(json_encode(array('error' => array('code' => 404, 'message' => 'Item not found'))));
 	}
 
 	while ($row = $result->fetch_assoc()) {
@@ -62,7 +62,6 @@ function create_item($name, $description, $price, $image_data, $latitude, $longi
 	start_session();
 	if (isset($_SESSION['user'])) {
 		$user_id = $_SESSION['user'];
-
 
 		$filtered_data = substr($image_data, strpos($image_data, ",")+1);
 		$filtered_data = str_replace(" ", "+", $filtered_data);
@@ -78,6 +77,72 @@ function create_item($name, $description, $price, $image_data, $latitude, $longi
 
 		if ($result = db_connection()->query($insert_query)) {
 			return get_items(0.0, 0.0, 0.0, 0, $_SESSION['user']);
+		}
+	} else {
+		http_response_code(401);
+		die(json_encode(array('error' => array('code' => 401, 'message' => 'You have to be signed in to do that'))));
+	}
+}
+
+// Only send the values that need changing
+function edit_item($post_array) {
+	unset($post_array['action']);
+
+	start_session();
+	
+	if (isset($_SESSION['user'])) {
+		
+		if (!isset($post_array['item_id'])) {
+			http_response_code(404);
+			die(json_encode(array('error' => array('code' => 400, 'message' => 'Item not found'))));
+		}
+
+		$item_id = $post_array['item_id'];
+		$current_item = get_item($item_id); // This request will die() if item is not found
+		
+		if ($current_item['user_id'] == $_SESSION['user']) {
+			unset($post_array['item_id']); // remove item ID from post array
+
+			$update_query;
+
+			if (isset($post_array['image_data'])) {
+				$filtered_data = substr($post_array['image_data'], strpos($post_array['image_data'], ",")+1);
+				$filtered_data = str_replace(" ", "+", $filtered_data);
+
+				$file_name = sha1(uniqid("img_")).".png";
+
+				$img = imagecreatefromstring(base64_decode($filtered_data));
+				imagepng($img, './media/'.$file_name);
+
+				$image_url = image_path($file_name);
+				unset($post_array['image_data']);
+				$post_array['image_url'] = $image_url;
+			}
+
+			reset($post_array);
+			$first_key   = key($post_array);
+			$first_value = $post_array[$first_key];
+
+			$update_query = "UPDATE items SET $first_key='$first_value'";
+			unset($post_array[$first_key]);
+
+			foreach ($post_array as $key => $value) {
+				$update_query .= ", ";
+				$update_query .= "$key='$value'";
+			}
+			$update_query .= "WHERE item_id='$item_id'";
+			echo $update_query;
+
+			if ($result=db_connection()->query($update_query)) {
+				return json_encode(array('code' => 200, 'message' => 'success'));
+			} else {
+				http_response_code(500);
+				die(json_encode(array('error' => array('code' => 500, 'message' => 'Couldn\'t update item at this time'))));
+			}
+
+		} else {
+			http_response_code(400);
+			die(json_encode(array('error' => array('code' => 400, 'message' => 'Can\'t edit an item that\'s not yours'))));
 		}
 	} else {
 		http_response_code(401);

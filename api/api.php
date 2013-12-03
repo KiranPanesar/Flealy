@@ -74,7 +74,11 @@ switch ($_SERVER['REQUEST_METHOD']) {
 					echo sign_in($_POST['username'], $_POST['password']);
 					break;
 				case 'item':
-					echo create_item($_POST['name'], $_POST['description'], $_POST['price'], $_POST['image_data'], $_POST['lat'], $_POST['lon']);
+					if (isset($_POST['item_id'])) {
+						echo edit_item($_POST);
+					} else {
+						echo create_item($_POST['name'], $_POST['description'], $_POST['price'], $_POST['image_data'], $_POST['lat'], $_POST['lon']);
+					}
 					break;
 				case 'cart':
 					echo add_item_to_cart($_POST['id']);
@@ -152,7 +156,7 @@ function escape_arguments($arguments) {
 
 function db_connection() {
 	// FOR PRODUCTION
-	$connection = new mysqli('ephesus.cs.cf.ac.uk', 'c1212877', 'WGzXH[0Sm~57doK', 'c1212877');
+	$connection = new mysqli('ephesus.cs.cf.ac.uk', 'c1212877', "REDACTED", 'c1212877');
 
 	// FOR SANDBOX
 	// $connection = new mysqli('localhost', 'root', 'root', 'flealy');	
@@ -169,11 +173,11 @@ function login_hash($username, $password) {
 }
 
 function image_path($file_name) {
-		// FOR PRODUCTION
-	// return "https://project.cs.cf.ac.uk/K.Panesar/lab2/Flealy/api/media/".$file_name;
+	// FOR PRODUCTION
+	return "https://project.cs.cf.ac.uk/K.Panesar/lab2/flealy/api/media/".$file_name;
 
 	// FOR SANDBOX
-	return "http://localhost:8888/api/media/".$file_name;
+	// return "http://localhost:8888/api/media/".$file_name;
 
 };
 
