@@ -8,6 +8,7 @@
 	height:100%;
 	opacity: 0;
 	transition: opacity .5s ease;
+	-webkit-transition: opacity .5s ease;
 }
 
 #browser {
@@ -21,6 +22,7 @@
 	box-shadow: -1px -1px 5px rgba(52, 73, 94,0.5);
 	
 	transition: opacity .5s ease;
+	-webkit-transition: opacity .5s ease;
 
 	/*right: -40%;*/
 	opacity: 0;

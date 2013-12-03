@@ -11,6 +11,7 @@
 	border-radius: 2px;
 	position: relative;
 	transition: background-color 0.2s ease;
+	-webkit-transition: background-color 0.2s ease;
 }
 
 .item-table-summary:hover {

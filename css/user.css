@@ -15,6 +15,7 @@
 	box-shadow: 1px 1px 5px rgba(52, 73, 94,0.5);
 	z-index: 10;
 	transition: left 0.5s ease;
+	-webkit-transition: left 0.5s ease;
 	animation-delay: 2s;
 }
 
@@ -93,6 +94,9 @@ small {
 	opacity: 0;
 	transition: opacity 0.5s ease;
 	transition-delay: .5s;
+	-webkit-transition: opacity 0.5s ease;
+	-webkit-transition-delay: .5s;
+
 }
 
 .item-table-summary {
