@@ -1,8 +1,8 @@
 function goHome() {
 	if (getUserData() != null) {
-		window.location.replace("../views/browse.php");
+		window.location.replace("./views/browse.php");
 	} else {
-		window.location.replace("../");
+		window.location.replace("./");
 	};
 };
 
@@ -25,6 +25,7 @@ function drawNavBar() {
 		document.writeln("<li> <a href='#' class='btn btn-success' id='show-list-item-nav-button' onclick='showListItemDialog()'>LIST ITEM</a></li>");
 	} else {
 		document.writeln("<li> <a href='../views/login.php'>SIGN IN</a></li>");
+		document.writeln("<li> <a href='../views/register.php'>REGISTER</a></li>");
 	};
 	
 	document.writeln("</ul>");
