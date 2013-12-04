@@ -1,5 +1,6 @@
 var current_position = null;
 var last_search_term = "";
+var map = null;
 
 window.onload = function() {
 	navigator.geolocation.getCurrentPosition(function(position) {
@@ -90,9 +91,7 @@ function parseItemsJSON(items) {
 		};
 
 		htmlString += "</tr>";
-	navigator.geolocation.getCurrentPosition(function(position) {
-		dropPins(position);
-	});
+		dropPins(current_position);
 
 	} else {
 		htmlString = "<h2 id='no-items-title'>You're not selling any items :(</h2><br/><center><a class='btn btn-submit' id='list-button' href='#'>List something!</a></center>"
@@ -136,18 +135,12 @@ function initializeMap(lat, lon) {
 	  center: new google.maps.LatLng(lat, lon),
 	  zoom: 15
 	};
-	var map = new google.maps.Map(document.getElementById("map-canvas"),
+	map = new google.maps.Map(document.getElementById("map-canvas"),
 	    mapOptions);
 };
 
 // pins is an array of Google Maps LatLng() objects.
 function dropPins(position) {
-	var mapOptions = {
-	 	zoom: 15,
-	    center: new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
-	}
-
-	var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
 	for (var i = 0; i < browse_items_json.length; i++) {
 		var item = JSON.parse(browse_items_json[i]);
