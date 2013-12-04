@@ -98,8 +98,8 @@ function edit_item($post_array) {
 		}
 
 		$item_id = $post_array['item_id'];
-		$current_item = get_item($item_id); // This request will die() if item is not found
-		
+		$current_item = json_decode(get_item($item_id), true); // This request will die() if item is not found
+	
 		if ($current_item['user_id'] == $_SESSION['user']) {
 			unset($post_array['item_id']); // remove item ID from post array
 

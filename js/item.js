@@ -1,4 +1,5 @@
 var view_item_delete_callback = null;
+var view_item_edit_callback = null;
 
 var item_json = null;
 
@@ -13,6 +14,10 @@ function showItemDialog(item) {
 
 function hideItemDialog() {
 	hideOverlayDialog();
+};
+
+function hideItemDialogAfterDeletion() {
+	hideItemDialog();
 	if (view_item_delete_callback != null) {
 		view_item_delete_callback();
 	};
@@ -20,7 +25,11 @@ function hideItemDialog() {
 
 function setItemOverlayDeleteCallback(callback) {
 	view_item_delete_callback = callback;
-}
+};
+
+function setItemOverlayEditCallback(callback) {
+	view_item_edit_callback = callback;
+};
 
 function buyItem(item_id) {
 
@@ -51,7 +60,7 @@ function buyItem(item_id) {
 			window.location.replace("../views/login.php");
 		};
 	};
-}
+};
 
 function deleteItem(item_id) {
 	if (confirm("Are you sure you want to delete this item?")) {
@@ -70,7 +79,14 @@ function deleteItem(item_id) {
 			};
 		};
 	};
-}
+};
+
+function editItem(item_id) {
+	hideItemDialog();
+	if (view_item_edit_callback != null) {
+		view_item_edit_callback(item_json);
+	};
+};
 
 function drawMapView(lat, lon) {
 	var map_view = document.createElement("div");
@@ -126,8 +142,6 @@ function drawItemInfoView(item) {
 	item_detail_description.setAttribute("id", "item-detail-description");
 	item_detail_description.innerHTML = item.description;
 
-	button_container.appendChild(buy_item);
-
 	if (getUserData() != null) {
 		if (item.user_id == getUserData().user_id) {
 			var ownership_notification = document.createElement("p");
@@ -141,17 +155,24 @@ function drawItemInfoView(item) {
 			delete_item_button.setAttribute("onclick", "deleteItem(" + item.item_id + ")");
 			delete_item_button.innerHTML = "Delete Item";
 
+			var edit_item_button = document.createElement("a");
+			edit_item_button.setAttribute("class", "btn btn-success");
+			edit_item_button.setAttribute("id", "edit-item-button");
+			edit_item_button.setAttribute("href", "#");
+			edit_item_button.setAttribute("onclick", "editItem(" + item.item_id + ")");
+			edit_item_button.innerHTML = "Edit Item";
+
+			button_container.appendChild(edit_item_button);
 			button_container.appendChild(delete_item_button);
 			button_container.appendChild(ownership_notification);
-
-
 		} else {
 			var message_user = document.createElement("a");
 			message_user.setAttribute("class", "btn btn-info");
 			message_user.setAttribute("id", "view-user-profile");
 			message_user.setAttribute("href", "../views/user.php?id="+item['user_id']);
 			message_user.innerHTML = "View Seller";
-
+			
+			button_container.appendChild(buy_item);
 			button_container.appendChild(message_user);
 		};
 	} else {
@@ -160,7 +181,8 @@ function drawItemInfoView(item) {
 			message_user.setAttribute("id", "view-user-profile");
 			message_user.setAttribute("href", "../views/user.php?id="+item['user_id']);
 			message_user.innerHTML = "View Seller";
-
+			
+			button_container.appendChild(buy_item);
 			button_container.appendChild(message_user);
 	};
 
@@ -169,7 +191,7 @@ function drawItemInfoView(item) {
 	metadata_container.appendChild(item_detail_description);
 
 	appendOverlayContentView(metadata_container);
-}
+};
 
 function itemDeleted() {
 	removeElementFromDocument("metadata-container");
@@ -182,7 +204,7 @@ function itemDeleted() {
 	var goShoppingButton = document.createElement("a");
 	goShoppingButton.setAttribute("class", "btn btn-info");
 	goShoppingButton.setAttribute("id", "delete-dismiss-button");
-	goShoppingButton.setAttribute("onclick", "hideItemDialog()");
+	goShoppingButton.setAttribute("onclick", "hideItemDialogAfterDeletion()");
 	goShoppingButton.setAttribute("href", "#");
 
 	goShoppingButton.innerHTML = "Done";
@@ -195,4 +217,4 @@ function itemDeleted() {
 
 	appendOverlayContentView(successMessageContainer);
 
-}
+};

@@ -119,6 +119,12 @@
 	background-color: #2980b9;
 }
 
+#edit-item-button {
+	display: block;
+	margin-top: 5px;
+	width: 120px;
+}
+
 #delete-item-button {
 	display: block;
 	margin-top: 5px;

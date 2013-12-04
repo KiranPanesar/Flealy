@@ -1,17 +1,33 @@
 var list_item_location = null;
 var list_item_callback_function = null;
 var item_image_base64 = null;
+var editing_item_json = null;
+var map = null;
 
 function setListItemSuccessCallback(callback) {
 	list_item_callback_function = callback;
 };
 
-function showListItemDialog() {
+// item_json is passed if an item is being edited
+function showListItemDialog(item_json) {
 	showOverlayDialog();
-	navigator.geolocation.getCurrentPosition(function(position) {
-		drawListItemMapView(position.coords.latitude, position.coords.longitude);
+
+	if (item_json == null) {
+		navigator.geolocation.getCurrentPosition(function(position) {
+			drawListItemMapView(position.coords.latitude, position.coords.longitude);
+			drawListItemForm();
+		});
+	} else {
+		editing_item_json = item_json;
+		drawListItemMapView(editing_item_json.latitude, editing_item_json.longitude);
 		drawListItemForm();
-	});
+		fillItemDataForEditing();
+
+		navigator.geolocation.getCurrentPosition(function(position) {
+			showUserLocationOnMap(map, position.coords.latitude, position.coords.longitude);
+		});
+	};
+
 };
 
 function hideListItemDialog() {
@@ -28,7 +44,7 @@ function drawListItemMapView(lat, lon) {
 	 	zoom: 15,
 	    center: new google.maps.LatLng(lat, lon)
 	}
-	var map = new google.maps.Map(document.getElementById('list-item-map-canvas'), mapOptions);
+	map = new google.maps.Map(document.getElementById('list-item-map-canvas'), mapOptions);
 	
 	var marker;
 
@@ -46,7 +62,17 @@ function drawListItemMapView(lat, lon) {
 		});
 	});
 
-	showUserLocationOnMap(map, lat, lon);
+	if (editing_item_json == null) {
+		showUserLocationOnMap(map, lat, lon);
+	} else {
+		list_item_location = new google.maps.LatLng(lat,lon);
+
+		marker = new google.maps.Marker({
+		    position: list_item_location,
+		    map: map,
+		    title: 'Hello World!'
+		});
+	};
 };
 
 function drawListItemForm() {
@@ -88,7 +114,7 @@ function drawListItemForm() {
 	list_item_submit_button.setAttribute("name", "image");
 	list_item_submit_button.setAttribute("class", "btn btn-success");
 	list_item_submit_button.setAttribute("id", "list-item-submit");
-	list_item_submit_button.innerHTML = "List Item!";
+	list_item_submit_button.value = "List Item";
 
 	appendOverlayContentView(upload_image_div);
 
@@ -122,7 +148,25 @@ function drawListItemForm() {
 
 		reader.readAsDataURL(document.getElementById('list-item-upload-button').files[0]);
 	};
-};	
+};
+
+function fillItemDataForEditing() {
+	// Fill the image view
+	removeElementFromDocument("add-image-paragraph");
+	document.getElementById("upload-image-div").style.backgroundImage = "url("+editing_item_json.image_url+")";
+
+	// Fill the item name
+	document.getElementById("list-item-name").value = editing_item_json.name;
+
+	// Fill the item price
+	document.getElementById("list-item-price").value = editing_item_json.price;
+
+	// Fill the item description
+	document.getElementById("list-item-description").innerHTML = editing_item_json.description;	
+
+	// Set the submit button text
+	document.getElementById("list-item-submit").value = "Save Changes";
+}
 
 function submit_form() {
 	var item_name 		 = document.getElementById("list-item-name").value;
@@ -133,26 +177,81 @@ function submit_form() {
 		var lat 		     = list_item_location.lat();
 		var lon 		     = list_item_location.lng();
 
-		var file_submission = new XMLHttpRequest();
-		file_submission.open('POST', '../api/api.php?action=item&name='+item_name+"&description="+item_description+"&price="+item_price+"&lat="+lat+"&lon="+lon, true);
-		file_submission.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-		file_submission.send("action=item&name="+item_name+"&description="+item_description+"&price="+item_price+"&lat="+lat+"&lon="+lon+"&image_data="+item_image_base64);
+		if (editing_item_json) {
+			update_item(item_name, item_description, item_price, lat, lon);
+		} else {
+			create_item(item_name, item_description, item_price, lat, lon);
+		};
 
-		file_submission.onreadystatechange = function() {
-			if (file_submission.readyState == 4) {
-				if (file_submission.status != 200) {
-					handleError(file_submission.responseText);
-					return;
-				} else {
-					alert("Item successfully listed!");
-					if (list_item_callback_function != null) {
-						list_item_callback_function();
-					};
+	};
+};
+
+function create_item(item_name, item_description, item_price, lat, lon) {
+	var file_submission = new XMLHttpRequest();
+	file_submission.open('POST', '../api/api.php', true);
+	file_submission.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	file_submission.send("action=item&name="+item_name+"&description="+item_description+"&price="+item_price+"&lat="+lat+"&lon="+lon+"&image_data="+item_image_base64);
+
+	file_submission.onreadystatechange = function() {
+		if (file_submission.readyState == 4) {
+			if (file_submission.status != 200) {
+				handleError(file_submission.responseText);
+				return;
+			} else {
+				alert("Item successfully listed!");
+				hideListItemDialog();
+				if (list_item_callback_function != null) {
+					list_item_callback_function();
 				};
 			};
 		};
 	};
 };
+
+function update_item(item_name, item_description, item_price, lat, lon) {
+	var api_request = new XMLHttpRequest();
+	api_request.open('POST', '../api/api.php', true);
+	api_request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+
+	var request_string = "action=item&item_id=" + editing_item_json.item_id;
+
+	if (item_name != editing_item_json.name) {
+		request_string += "&name="+item_name;
+	};
+
+	if (item_description != editing_item_json.description) {
+		request_string += "&description="+item_description;
+	};
+
+	if (item_price != editing_item_json.price) {
+		request_string += "&price="+item_price;
+	};
+
+	if (lat != editing_item_json.latitude) {
+		request_string += "&latitude="+lat+"&longitude="+lon;
+	};
+
+	if (item_image_base64 != null) {
+		request_string += "&image_data="+item_image_base64;
+	};
+	
+	api_request.send(request_string);
+
+	api_request.onreadystatechange = function() {
+		if (api_request.readyState == 4) {
+			if (api_request.status != 200) {
+				handleError(api_request.responseText);
+				return;
+			} else {
+				alert("Item successfully updated!");
+				hideListItemDialog();
+				if (list_item_callback_function != null) {
+					list_item_callback_function();
+				};
+			};
+		};
+	};
+}
 
 function validate_forms(item_name, item_description, item_price, location, file) {
 	if (item_name.length == 0) {
@@ -175,7 +274,7 @@ function validate_forms(item_name, item_description, item_price, location, file)
 		return false;
 	};
 
-	if (file == null) {
+	if (file == null && editing_item_json == null) {
 		alert("Upload an image for the item");
 		return false;
 	};

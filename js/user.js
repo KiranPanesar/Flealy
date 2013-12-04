@@ -28,7 +28,6 @@ if (document.getElementById("show-list-item-nav-button") != null) {
 	document.getElementById("show-list-item-nav-button").addEventListener('click', function() {
 		setListItemSuccessCallback(function() {
 			loadItems(current_user_id);
-			hideListItemDialog();
 		});
 	}, false);
 };
@@ -133,6 +132,14 @@ function showItem(id) {
 			setItemOverlayDeleteCallback(function() {
 				loadItems(current_user_id);
 			});
+
+			setItemOverlayEditCallback(function(item_json) {
+				showListItemDialog(item_json);
+				setListItemSuccessCallback(function() {
+					loadItems(current_user_id);
+				});
+			});
+
 			break;
 		};
 	};

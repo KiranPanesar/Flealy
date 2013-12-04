@@ -30,7 +30,6 @@ if (document.getElementById("show-list-item-nav-button")) {
 	document.getElementById("show-list-item-nav-button").addEventListener('click', function() {
 		setListItemSuccessCallback(function() {
 			findNearbyItems(current_position.latitude, current_position.longitude, document.getElementById("sorting-selector").value);
-			hideListItemDialog();
 		});
 	}, false);
 };
@@ -49,8 +48,6 @@ function findNearbyItems(lat, lon, sorting, search_term) {
 	if (search_term != null) {
 		request_url = request_url + "&search_term="+search_term;	
 	};
-	
-	console.log(request_url);
 
 	var api_request = new XMLHttpRequest();
 	api_request.open("GET", request_url, true);
@@ -121,6 +118,14 @@ function showItem(id) {
 			setItemOverlayDeleteCallback(function() {
 				findNearbyItems(current_position.latitude, current_position.longitude, document.getElementById("sorting-selector").value);
 			});
+
+			setItemOverlayEditCallback(function(item_json) {
+				showListItemDialog(item_json);
+				setListItemSuccessCallback(function() {
+					findNearbyItems(current_position.latitude, current_position.longitude, document.getElementById("sorting-selector").value);
+				});
+			});
+
 			break;
 		};
 	};
