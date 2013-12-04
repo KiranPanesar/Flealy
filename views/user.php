@@ -2,7 +2,7 @@
 
 <html>
 <head>
-	<title>Kiran Panesar</title>
+	<title>Store</title>
 	<link rel="stylesheet" type="text/css" href="../css/style.css"/>
 	<link rel="stylesheet" type="text/css" href="../css/items.css"/>
 	<link rel="stylesheet" type="text/css" href="../css/user.css"/>

@@ -108,6 +108,7 @@ function parseItemsJSON(items) {
 };
 
 function parseUserData(response_json) {
+	document.title = response_json.username;
 	var user_picture = document.getElementById('user-picture');
 	user_picture.setAttribute("src", response_json['image_url']);
 
