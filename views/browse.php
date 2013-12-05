@@ -47,6 +47,13 @@
 						<option value="price_increasing">Price Ascending</option>
 						<option value="price_decreasing">Price Descending</option>
 					</select>
+					<select id="range-selector" class="select">
+						<option value="0.5">0.5 miles</option>
+						<option value="1">1 mile</option>
+						<option value="3">3 miles</option>
+						<option value="5">5 miles</option>
+					</select>
+
 				</center>
 	    	</form>
 	    	<center>
