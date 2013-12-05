@@ -21,5 +21,4 @@ document.getElementById("search-form").addEventListener('submit', function(event
 window.onload = function() {
 	document.getElementById("container-div").style.opacity = "1";
 	document.getElementById("container-div").style.marginTop = "-10px";
-
 };

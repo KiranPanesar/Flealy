@@ -51,7 +51,6 @@ function purchasedRateProduct(item_id, rating) {
 				handleError(api_request.responseText);
 				return;
 			} else {
-				console.log(api_request.responseText);
 				var response = JSON.parse(api_request.responseText);
 				if (response.error == null) {
 					alert("Successfully rated product");
@@ -75,7 +74,6 @@ function drawPurchasesTableView(items) {
 
 
 	purchases_json = JSON.parse(items);
-	console.log(purchases_json);
 
 	if (items != null) {
 		var htmlString = "";
