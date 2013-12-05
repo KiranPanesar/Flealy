@@ -11,13 +11,23 @@ function get_items($lat, $lon, $range, $sorting, $search_term, $user_id) {
 	if (isset($user_id)) {
 		$sql_query = "SELECT * FROM items WHERE user_id='$user_id'";
 	} else {
-		// Need to implement Haversine formula to pick nearby items (http://en.wikipedia.org/wiki/Haversine_formula)
-		// kill me kill me kill me kill m
-		$sql_query = "SELECT * FROM items";
+		if (!isset($range)) {
+			$range = 1; // Default to 1mile radius
+		}
+		$_SESSION['latitude']  = $lat;
+		$_SESSION['longitude'] = $lon;
+
+		// Haversine formula!
+		// Finds the items in the range using maths. (Yeah! Maths!)
+		$sql_query = "SELECT *, (3959 * acos(cos(radians($lat)) * cos(radians(latitude)) * cos(radians(longitude) - radians($lon)) + sin(radians($lat)) * sin(radians(latitude)))) AS distance FROM items HAVING distance < $range";
 	}
 	
 	if (isset($search_term)) {
-		$sql_query = $sql_query . " WHERE name LIKE '%".$search_term."%' OR description LIKE '%".$search_term."%'";
+		if (!isset($user_id)) {
+			$sql_query = $sql_query . " AND (name LIKE '%".$search_term."%' OR description LIKE '%".$search_term."%')";
+		} else {
+			$sql_query = $sql_query . " WHERE (name LIKE '%".$search_term."%' OR description LIKE '%".$search_term."%')";
+		}
 	}
 
 	if (isset($sorting)) {
@@ -29,7 +39,7 @@ function get_items($lat, $lon, $range, $sorting, $search_term, $user_id) {
 			$sql_query = $sql_query . " ORDER BY average_rating DESC";
 		}
 	}
-	
+
 	if ($result = db_connection()->query($sql_query)) {
 		$results_array = array();
 
@@ -76,7 +86,7 @@ function create_item($name, $description, $price, $image_data, $latitude, $longi
 		$insert_query = "INSERT INTO items (name, description, price, image_url, latitude, longitude, user_id) VALUES ('$name', '$description', '$price', '$image_url', '$latitude', '$longitude', '$user_id')";
 
 		if ($result = db_connection()->query($insert_query)) {
-			return get_items(0.0, 0.0, 0.0, 0, $_SESSION['user']);
+			return json_encode(array('code' => 200, 'message' => 'success'));
 		}
 	} else {
 		http_response_code(401);
