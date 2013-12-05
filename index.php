@@ -18,7 +18,7 @@
 		<div id="get-started">
 			<form id="search-form">
 				
-				<h2>I'm looking for the best <input type="text" name="search-term" id="search-term-input" class="text-input" autofocus/> near me.</h2>
+				<h2>I'm looking for the best <input type="text" name="search-term" id="search-term-input" class="text-input" autofocus placeholder="e.g. coffee"/> near me.</h2>
 				<input type="submit" value="Start Shopping" class="btn btn-submit" id="start-shopping" />
 			</form>
 			<input type="submit" value="Sign Up" class="btn btn-submit" id="sign-up" onclick="signUp();" />
