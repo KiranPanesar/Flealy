@@ -120,9 +120,6 @@ function parseUserData(response_json) {
 
 	var location_label = document.getElementById("location-label");
 	location_label.innerHTML = response_json['location'];
-
-	var sales_label = document.getElementById("sales-label");
-	sales_label.innerHTML = response_json['sales'] + " sales";
 }
 
 function showItem(id) {

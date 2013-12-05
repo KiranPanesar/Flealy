@@ -44,9 +44,6 @@
 			<h3 id="user-description"></h3>
 			<hr/>
 			<h3 id="location-label"></h3>
-			<h3 id="sales-label"></h3><br/>
-
-			<!-- <center><a class="btn btn-submit" id="edit-button" href="#">Edit Profile</a></center> -->
 		</div>
     	<div id="browser">
     		<h2 id="items-title">My Store</h2>
