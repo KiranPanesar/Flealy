@@ -7,7 +7,7 @@ window.onload = function() {
 		current_position = position;
 		last_search_term = fetchGETValueForKeyFromURL("search", window.location.href);
 
-		findNearbyItems(position.coords.latitude, position.coords.longitude, null, last_search_term);
+		findNearbyItems(position.coords.latitude, position.coords.longitude, document.getElementById("range-selector").value, null, last_search_term);
 		initializeMap(position.coords.latitude, position.coords.longitude);
 		
 		if (last_search_term != null) {
@@ -16,21 +16,32 @@ window.onload = function() {
 	});
 	
 	document.getElementById("sorting-selector").addEventListener("change", function() {
-		findNearbyItems(current_position.latitude, current_position.longitude, document.getElementById("sorting-selector").value);
+		initializeMap(current_position.coords.latitude, current_position.coords.longitude);
+		reloadItems();
+	}, false);
+
+	document.getElementById("range-selector").addEventListener("change", function() {
+		initializeMap(current_position.coords.latitude, current_position.coords.longitude);
+		reloadItems();
 	}, false);
 };
+
+function reloadItems() {
+	findNearbyItems(current_position.coords.latitude, current_position.coords.longitude, document.getElementById("range-selector").value, document.getElementById("sorting-selector").value, last_search_term);
+}
 
 function searchTermChanged() {	
 	if (document.getElementById("search-term").value != last_search_term) {
 		last_search_term = document.getElementById("search-term").value;
-		findNearbyItems(current_position.latitude, current_position.longitude, document.getElementById("sorting-selector").value, last_search_term);
+		reloadItems();
 	};
 };
 
 if (document.getElementById("show-list-item-nav-button")) {
 	document.getElementById("show-list-item-nav-button").addEventListener('click', function() {
 		setListItemSuccessCallback(function() {
-			findNearbyItems(current_position.latitude, current_position.longitude, document.getElementById("sorting-selector").value);
+			initializeMap(current_position.coords.latitude, current_position.coords.longitude);
+			reloadItems();
 		});
 	}, false);
 };
@@ -39,8 +50,8 @@ var browse_items_json = "";
 
 // Sorting can either be:
 // 		rating, price_increasing or price_decreasing 
-function findNearbyItems(lat, lon, sorting, search_term) {
-	var request_url = "../api/api.php?action=items&lat="+lat+"&lon="+lon;
+function findNearbyItems(lat, lon, range, sorting, search_term) {
+	var request_url = "../api/api.php?action=items&lat="+lat+"&lon="+lon+"&range="+range;
 
 	if (sorting != null) {
 		request_url = request_url + "&sorting="+sorting;
@@ -50,8 +61,10 @@ function findNearbyItems(lat, lon, sorting, search_term) {
 		request_url = request_url + "&search_term="+search_term;	
 	};
 
+
 	var api_request = new XMLHttpRequest();
 	api_request.open("GET", request_url, true);
+
 	api_request.send();
 
 	api_request.onreadystatechange = function() {
@@ -115,13 +128,15 @@ function showItem(id) {
 		if (item.item_id == id) {
 			showItemDialog(item);
 			setItemOverlayDeleteCallback(function() {
-				findNearbyItems(current_position.latitude, current_position.longitude, document.getElementById("sorting-selector").value);
+				initializeMap(current_position.coords.latitude, current_position.coords.longitude);
+				reloadItems();
 			});
 
 			setItemOverlayEditCallback(function(item_json) {
 				showListItemDialog(item_json);
 				setListItemSuccessCallback(function() {
-					findNearbyItems(current_position.latitude, current_position.longitude, document.getElementById("sorting-selector").value);
+					initializeMap(current_position.coords.latitude, current_position.coords.longitude);
+					reloadItems();
 				});
 			});
 
