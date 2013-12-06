@@ -33,6 +33,7 @@ function reloadItems() {
 function searchTermChanged() {	
 	if (document.getElementById("search-term").value != last_search_term) {
 		last_search_term = document.getElementById("search-term").value;
+		initializeMap(current_position.coords.latitude, current_position.coords.longitude);
 		reloadItems();
 	};
 };
