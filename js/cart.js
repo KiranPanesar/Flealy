@@ -9,6 +9,9 @@ function showUserCart() {
 
 	loadUserCart();
 
+	// Setup Stripe checkout
+	// This is a third-party component to handle the user payments
+	// Documentation here: https://stripe.com/docs/checkout
 	var handler = StripeCheckout.configure({
 		key: 'pk_test_KhN1YTW18SkQHzh1e3xfqzt6',
 		token: function(token, args) {
@@ -16,8 +19,11 @@ function showUserCart() {
 		}
 	});
 
+
+	// When the checkout button is clicked, open the Stripe checkout
 	document.getElementById('checkout-button').addEventListener('click', function(e) {
 		// Open Checkout with further options
+		// This is a third-party component
 		handler.open({
 			name: 'Flealy Checkout',
 			description: cart_items_json.summary.number_of_items + " items",

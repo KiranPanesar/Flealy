@@ -19,6 +19,7 @@ function get_items($lat, $lon, $range, $sorting, $search_term, $user_id) {
 
 		// Haversine formula!
 		// Finds the items in the range using maths. (Yeah! Maths!)
+		// Inspired by this Google snippet: https://developers.google.com/maps/articles/phpsqlsearch_v3#findnearsql
 		$sql_query = "SELECT *, (3959 * acos(cos(radians($lat)) * cos(radians(latitude)) * cos(radians(longitude) - radians($lon)) + sin(radians($lat)) * sin(radians(latitude)))) AS distance FROM items HAVING distance < $range";
 	}
 	
