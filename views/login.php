@@ -23,8 +23,6 @@
 
 				<input type="submit" value="Sign In" class="btn btn-submit" id="login-up" />
 			</form>
-			<p id="forgotten-login"><a href="http://f.cl.ly/items/0N332a1C1c3f1X263m3i/Image%202013.11.29%2016%3A00%3A16.jpeg" target="_new">Forgotten your password?</a></p>
-
 		</div>
 	</div>
 	
