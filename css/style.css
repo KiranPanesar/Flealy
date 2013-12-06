@@ -175,3 +175,8 @@ p {
 	font-family: Lato-Black;
 	src: url("../fonts/Lato-Black.ttf");
 }
+
+@font-face {
+	font-family: Lato-Bold;
+	src: url("../fonts/Lato-Bold.ttf");
+}
