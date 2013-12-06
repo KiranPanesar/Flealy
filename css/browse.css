@@ -23,8 +23,7 @@
 	
 	transition: opacity .5s ease;
 	-webkit-transition: opacity .5s ease;
-
-	/*right: -40%;*/
+	
 	opacity: 0;
 }
 

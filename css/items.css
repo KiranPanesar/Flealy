@@ -60,9 +60,7 @@
 	width: 13px;
 	height: 13px;
 	margin-top: 2px;
-/*	padding-left: 5px;
-	padding-right: 5px;
-*/	display: inline;
+	display: inline;
 	float: right;
 	background-image: url("../img/thumbs_up.png");
 	background-size: 13px 13px;
