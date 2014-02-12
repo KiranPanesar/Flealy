@@ -3,7 +3,9 @@ Flealy
 
 An online shopping platform by Kiran Panesar at Cardiff University (coursework piece for CM1102)
 
-Enter your postcode, see what items people are selling near you.
+The problem we have today is that we know the best places to go by using services like Yelp, but how do you find the absolute best cappuccino in your city? That's where Flealy comes in. 
+
+Flealy displays and ranks items listed nearby. A small business - whether it be a restaurant, coffee house or bar - would sign up and list the items that they offer. Users would then be able to see all the items on a map and find the best one closest to them. Flealy also features integration with [Stripe](http://stripe.com/) to handle payments.
 
 Database dump
 ------
